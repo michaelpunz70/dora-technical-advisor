@@ -1,0 +1,37 @@
+# PDF documents (not committed, links in docs/document-sources.md)
+*.pdf
+
+# LLM model files
+*.model
+*.bin
+*.gguf
+*.ggml
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# AnythingLLM data
+anythingllm-data/
+
+# LM Studio data
+lm-studio-models/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# Logs and temp files
+*.log
+*.tmp
+*.bak
+*.swp
+*~
