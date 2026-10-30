@@ -1,5 +1,13 @@
 # DORA Pillar 4 — ICT Third-Party Risk Management
 
+## Interpretation and assurance status
+
+**Editorial revision: 30 October 2026. Human legal/control review remains open.** This document is an author-created working mapping, not an authoritative statement or evidence of implemented controls. Regulatory summaries must be checked against the current official text and entity-specific applicability. This revision corrects selected identified issues; it is not a paragraph-by-paragraph legal assurance opinion.
+
+**Reading rules:** technical designs, products, numeric thresholds, internal SLAs, review cadences, staffing choices, and maturity targets in implementation sections are project examples unless an exact source provision expressly supports them. They are not universal regulatory minima. Priority labels are project judgements. Evidence lists are requests for material to collect, not assertions that it exists or is sufficient. ISO/NIST cross-references are interpretive and require edition-specific review.
+
+For each adopted control, record: provision and applicability rationale; control objective and design; accountable owner; evidence artifact, period, and location; design and operating-effectiveness checks; result, gap, remediation owner, and due date. Use [the mapping review procedure](../../docs/mapping-review.md) before relying on this material.
+
 ## Regulatory Scope
 
 - **DORA Articles**: 28–44 (Chapter V)
@@ -14,23 +22,23 @@
   - Commission Delegated Regulation (EU) 2025/420 — joint examination teams
   - Commission Delegated Regulation (EU) 2024/1505 — oversight fees for CTPPs
 - **Applicability**: All financial entities, including those under the simplified framework
-- **Key deadline**: 30 April 2025 — first transmission of the Register of Information to competent authorities
+- **Reporting schedules**: verify current authority collection instructions; a historical collection date is not a universal deadline for every entity or reporting year.
 
 ---
 
 ## Art. 28 — General Principles
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities must manage ICT third-party risk as an integral component of ICT risk within their ICT risk management framework. They remain fully responsible at all times for compliance with, and discharge of, all obligations under DORA and applicable financial services law — regardless of the use of ICT third-party service providers. Financial entities must adopt and regularly review a strategy on ICT third-party risk, including a policy on the use of ICT services supporting critical or important functions provided by ICT third-party service providers.
 
 The management body must regularly review the risks identified with respect to contractual arrangements on the use of ICT services. Financial entities must maintain and update at entity, sub-consolidated, and consolidated level a Register of Information in relation to all contractual arrangements on the use of ICT services provided by third-party service providers.
 
-Financial entities must report the Register of Information to the competent authority at least annually.
+Article 28(3) distinguishes reporting at least yearly on arrangements from making the full register available on request. Specific supervisory collections may require full-register submission; verify the current instructions for the entity.
 
 Financial entities must adequately inform the competent authority in a timely manner about any planned contractual arrangement on the use of ICT services supporting critical or important functions, as well as when a function has become critical or important.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **ICT third-party risk strategy:**
 - Develop and document an overarching ICT Third-Party Risk Management Strategy approved by the management body, covering:
@@ -75,9 +83,9 @@ Financial entities must adequately inform the competent authority in a timely ma
 | b_05 — ICT third-party service providers | Provider identification (LEI or alternative ID), provider name, country of incorporation, country of service delivery, parent company |
 | b_06 — Subcontracting/sub-outsourcing chains | Subcontractors used by the provider, services subcontracted, subcontractor identification, country |
 
-- Populate all mandatory fields with accurate and current data — the competent authority will reject incomplete submissions
+- Populate required fields accurately and apply the receiving authority’s validation rules; record errors and remediation rather than assuming a universal rejection outcome.
 - Implement a process to keep the RoI continuously updated: trigger reviews when contracts are signed, amended, or terminated
-- Submit the RoI to the competent authority annually (first submission deadline: 30 April 2025) and upon request
+- Distinguish annual reporting on new arrangements under Art. 28(3) from provision of the full register on request and any specific supervisory collection instructions. Confirm entity-specific submission dates and formats.
 - Groups may maintain a single consolidated RoI covering all entities in the group
 
 **Competent authority notification for CIF arrangements:**
@@ -94,10 +102,10 @@ Financial entities must adequately inform the competent authority in a timely ma
 - **Provider Security Rating**: BitSight, SecurityScorecard, RiskRecon, UpGuard — for continuous external monitoring of provider security posture
 - **Contract Management**: ContractPodAi, Icertis, SharePoint-based contract repositories with metadata tagging
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - ICT Third-Party Risk Management Strategy (approved, dated, version-controlled)
-- ICT Third-Party Risk Policy (RTS 2024/1773 compliant)
+- Approved ICT third-party risk policy, with a documented gap assessment against applicable RTS 2024/1773 provisions
 - Register of Information (complete, current, structured per ITS 2024/2956 templates)
 - Proof of annual RoI submission to competent authority (submission receipt, timestamp)
 - Competent authority notifications for CIF-supporting arrangements
@@ -111,7 +119,7 @@ Financial entities must adequately inform the competent authority in a timely ma
 
 ## Art. 29 — Preliminary Assessment of ICT Concentration Risk at Entity Level
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Before entering into a contractual arrangement for ICT services, financial entities must identify and assess whether the conclusion of the arrangement would lead to:
 - Contracting an ICT third-party service provider that is not easily substitutable
@@ -119,7 +127,7 @@ Before entering into a contractual arrangement for ICT services, financial entit
 
 The entity must weigh the benefits and costs of alternative solutions, and consider whether the planned arrangement would give rise to concentration risk. This assessment must account for the number of critical or important functions entrusted to the same provider, the potential effect of disruption at the provider on multiple CIFs simultaneously, and the availability of alternative providers.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Concentration risk assessment framework:**
 - Develop a formal ICT concentration risk assessment methodology documented in the TPRM policy
@@ -158,7 +166,7 @@ The entity must weigh the benefits and costs of alternative solutions, and consi
 - **TPRM Platforms with concentration risk features**: OneTrust, Prevalent, ServiceNow
 - **Cloud provider dependency mapping**: CloudHealth, Flexera, open-source cost analysis tools
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - ICT concentration risk assessment methodology
 - Pre-contract concentration risk assessment records for all CIF-supporting arrangements
@@ -173,7 +181,7 @@ The entity must weigh the benefits and costs of alternative solutions, and consi
 
 ## Art. 30 — Key Contractual Provisions
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 All contractual arrangements on the use of ICT services must include specific provisions. Arrangements supporting critical or important functions have additional mandatory requirements. DORA specifies minimum contractual clauses that must be present, and the rights of the entity that cannot be contractually waived.
 
@@ -206,13 +214,13 @@ This is one of DORA's most operationally impactful articles — it requires rene
 | Provider incident notification | Provider must notify the entity without undue delay of any ICT-related incident impacting the service, and cooperate in incident management |
 | Regulatory cooperation | Provider must cooperate fully with competent authorities, including on-site inspections by regulators |
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Contract review and remediation programme:**
 - Conduct a comprehensive gap analysis of ALL existing ICT third-party contracts against Art. 30 requirements
 - Prioritise remediation: CIF-supporting arrangements first, then non-CIF
 - Develop a standard contract addendum or supplementary agreement template containing all DORA mandatory provisions — for use in renegotiating existing contracts
-- Develop a DORA-compliant master contract template for all new arrangements
+- Develop a legally reviewed master contract template mapped to applicable Article 30 provisions; a template alone does not establish compliance
 - Track contract remediation progress in the RoI or contract management system
 
 **Mandatory contract clauses — implementation detail:**
@@ -233,19 +241,19 @@ This is one of DORA's most operationally impactful articles — it requires rene
 
 **Incident notification by provider:**
 - Contract must require provider to notify the entity of ICT-related incidents without undue delay
-- Define maximum notification time: aligned with DORA incident reporting timelines (entity must be able to classify and report within 4 hours, so provider notification must be faster — recommend ≤ 1 hour for critical incidents)
+- Define maximum notification time: aligned with DORA incident reporting timelines (account for the applicable awareness/classification/submission clocks; a one-hour provider target is an illustrative contractual control, not a regulatory requirement)
 - Provider must cooperate in incident investigation, provide forensic data, and support root cause analysis
 - Provider must implement incident management processes compatible with the entity's processes (see Pillar 2)
 
 **Exit strategy and data portability (RTS 2024/1773 Art. 5):**
 - Every CIF-supporting contract must have a documented exit strategy covering:
-  - Transition plan with minimum 6-month transition period
+  - Transition plan with a justified, contractually agreed period sufficient for safe migration; six months is an illustrative planning choice, not a universal DORA minimum
   - Data return: provider must return all entity data in a standard, usable format
   - Data deletion: provider must securely delete all entity data after confirmed return, with certification
   - Continued service: provider must continue providing services during the transition period at the same SLA
   - Knowledge transfer: provider must support knowledge transfer to the replacement provider or back to the entity
   - Transitional arrangements and associated costs must be pre-agreed
-- Test exit strategy feasibility at least every 3 years for CIF-supporting arrangements
+- Set and justify the exit-strategy review and testing frequency for CIF-supporting arrangements; a three-year cycle is an internal example, not a universal minimum established here.
 - Maintain documented contingency plans in case of abrupt provider termination (no transition period)
 
 **Subcontracting provisions (RTS 2025/532):**
@@ -271,7 +279,7 @@ This is one of DORA's most operationally impactful articles — it requires rene
 - **Audit Management**: AuditBoard, TeamMate+, custom audit tracker in GRC platform
 - **Data Classification and Location Tracking**: Data flow mapping tools (OneTrust DataDiscovery, Varonis, BigID)
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - DORA contract compliance gap analysis results and remediation tracker
 - Updated contracts with DORA mandatory provisions (signed versions)
@@ -291,7 +299,7 @@ This is one of DORA's most operationally impactful articles — it requires rene
 
 ## Art. 31–44 — Oversight Framework for Critical ICT Third-Party Service Providers (CTPPs)
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 DORA establishes a pan-European oversight framework for ICT third-party service providers designated as "critical" (CTPPs). This framework is directly managed by the ESAs (EBA, EIOPA, ESMA) through a Lead Overseer model. The oversight framework applies to the providers themselves — not directly to financial entities. However, financial entities that use CTPPs must understand the framework as it affects their provider relationships, contractual arrangements, and concentration risk assessments.
 
@@ -320,7 +328,7 @@ DORA establishes a pan-European oversight framework for ICT third-party service 
 - The Lead Overseer can issue recommendations requiring the CTPP to remediate identified risks or deficiencies
 - If the CTPP fails to comply with recommendations, the Lead Overseer can impose a periodic penalty payment
 
-### Technical Implementations for Financial Entities Using CTPPs
+### Proposed Technical Implementations — Project Examples for Financial Entities Using CTPPs
 
 **Monitoring CTPP designation status:**
 - Track ESA publications and Joint Committee decisions on CTPP designation
@@ -351,7 +359,7 @@ DORA establishes a pan-European oversight framework for ICT third-party service 
 - **CTPP Monitoring**: ESA publication alerts, regulatory intelligence services (Thomson Reuters Regulatory Intelligence, Wolters Kluwer), direct subscription to ESA newsletters
 - **Enhanced Due Diligence**: TPRM platforms with regulatory monitoring integration
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Record of CTPP designation monitoring activities
 - Enhanced due diligence reports for CTPP arrangements
@@ -408,7 +416,7 @@ DORA establishes a pan-European oversight framework for ICT third-party service 
 │
 6. EXIT & TRANSITION
 │ ├─ Activate exit strategy when needed (contract end, breach, strategic change)
-│ ├─ Execute transition plan with minimum 6-month period
+│ ├─ Execute the approved transition plan with the justified and agreed migration period
 │ ├─ Ensure data return in standard format
 │ ├─ Verify data deletion by provider with certification
 │ ├─ Knowledge transfer to replacement provider or in-house
@@ -458,11 +466,12 @@ In addition to the RTS/ITS, financial entities should consider the following EBA
 
 ## Document Metadata
 
-- **Version**: 1.0
+- **Version**: 1.0 — revised documentation; evaluation pending
 - **Knowledge base**: DORA Technical Implementation Advisor
 - **Pillar**: 4 of 5 — ICT Third-Party Risk Management
 - **DORA Articles covered**: 28, 29, 30, 31–44 (overview)
 - **RTS/ITS covered**: RTS 2024/1773, RTS 2025/532, ITS 2024/2956, RTS 2024/1502, RTS 2025/295, RTS 2025/420, Reg. 2024/1505
 - **Target entity type**: Credit institution (bank)
 - **Proportionality tier**: Full framework
-- **Last updated**: July 2026
+- **Original content date**: July 2026
+- **Editorial revision date**: 30 October 2026

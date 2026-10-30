@@ -1,111 +1,80 @@
-# Setup Guide
+# Setup Guide — Local-First Research Configuration
 
-## System Architecture
+**Status: documented configuration and reproducibility procedure; no deployment certification or completed model evaluation.** Application labels and capabilities depend on installed versions.
 
-The DORA Technical Implementation Advisor runs on a fully local stack with three components:
+## Architecture and baseline
 
-**LM Studio** serves as the local inference engine. It loads GGUF-quantized models and exposes an OpenAI-compatible API endpoint at `localhost:1234`. The Apple Silicon Metal backend handles GPU acceleration through the M3's unified memory architecture.
+LM Studio serves local LLM inference through an OpenAI-compatible endpoint. AnythingLLM Desktop handles document ingestion, chunking, local embeddings, and retrieval using embedded LanceDB. The intended inference backend on the project Mac is Apple Silicon Metal.
 
-**AnythingLLM** provides the RAG layer. It handles document ingestion, chunking, vector embedding (via its built-in embedder), and vector search (LanceDB). Each query retrieves the top-K most relevant chunks from the knowledge base and passes them as context to the LLM via the LM Studio API.
-
-**The Knowledge Base** consists of three levels of documents loaded into a single AnythingLLM workspace:
-
-| Level | Content | Files | Source |
-|---|---|---|---|
-| Level 1 | DORA regulation + 8 RTS/ITS | 9 PDFs | EUR-Lex (see [`document-sources.md`](document-sources.md)) |
-| Level 2 | Technical implementation mapping (Art. 1–45) | 6 Markdown files (25,000+ words) | Original content in `knowledge-base/level-2-technical-mapping/` |
-| Level 3 | TIBER-EU, NIST CSF 2.0, cross-reference frameworks | 3–4 PDFs | ECB, NIST (see [`document-sources.md`](document-sources.md)) |
-
-```
-User Query
-    │
-    ▼
-AnythingLLM ──► Vector Search (LanceDB, Top-K=6) ──► Relevant Chunks
-    │                                                       │
-    ▼                                                       ▼
-LM Studio (localhost:1234) ◄─── Context: Chunks + System Prompt
-    │
-    ▼
-Structured Response (article references, technical controls, tools, audit evidence)
+```text
+Public documents → AnythingLLM local embeddings → LanceDB
+User query → retrieval (Top-K = 6) → context + workspace prompt
+           → LM Studio (localhost:1234) → draft response → human source review
 ```
 
----
+| Component | Project baseline |
+| --- | --- |
+| Hardware | MacBook Air M3; 16 GB unified memory |
+| Historical OS label | macOS Sequoia 15.6.1; actual run version must be recorded |
+| LM Studio endpoint | `http://localhost:1234/v1` |
+| RAG engine / database | AnythingLLM Desktop / LanceDB |
+| Embedding | Built-in local embedder; exact artifact and version pending |
+| Chat mode | Query; this is not a guarantee against unsupported output |
+| Retrieval | Top-K 6; similarity threshold 0.25 as recorded in the original configuration |
+| Corpus | 9 regulatory PDFs, 6 mapping Markdown files, 3 context PDFs |
 
-## Hardware Requirements
+The previously stated 20 GB free disk space is an initial planning estimate, not a tested minimum. Storage depends on the number and size of model artifacts, vector data, and backups. Six models may require substantially more space. Memory use depends on model architecture, quantisation, context length, runtime settings, and other applications. Successful execution of every candidate on 16 GB has not been demonstrated.
 
-| Component | Minimum | Used in This Project |
-|---|---|---|
-| Machine | Any Apple Silicon Mac or PC with 16+ GB RAM | MacBook Air M3, 16 GB unified memory, macOS Sequoia 15.6.1 |
-| Disk space | 20 GB free | For models (4–10 GB each) + AnythingLLM data |
-| GPU | Apple Silicon Metal or NVIDIA with 8+ GB VRAM | M3 integrated GPU via Metal |
+## 1. Record the environment
 
-**Memory considerations**: macOS reserves approximately 4–5 GB, leaving ~11 GB for applications. Models up to 8B parameters in Q4_K_M quantization (~5 GB) run comfortably. The 12B and 14B models used in this evaluation push closer to the memory limit and may trigger occasional swap, resulting in slower inference but still functional results.
+Before installation or testing, record OS version, application versions, hardware, available storage, and any configured external services. Download applications from [LM Studio](https://lmstudio.ai/) and [AnythingLLM Desktop](https://anythingllm.com/download). Check their current requirements and publisher documentation for the installed versions.
 
----
+## 2. Select and identify a local model
 
-## Model Selection
+The six candidate labels and unverified inventory specifications are retained in [evaluation-results.md](../tests/evaluation-results.md). Record the publisher model ID, artifact URL, filename, hash, format, quantisation, context limit, and license. Do not infer architecture or compatibility solely from a display label. Begin with an artifact that fits available memory; log loading failures, swap pressure, or incomplete runs rather than reporting them as successful evaluation.
 
-Six models were selected to cover four organizational ecosystems, three parameter size tiers, and both dense and Mixture-of-Experts architectures:
+The server base address is `http://localhost:1234`; the API base path is shown below.
 
-| Model | Organization | Parameters | Architecture | Rationale |
-|---|---|---|---|---|
-| Ministral 3 3B Reasoning | Mistral AI | 3B | Dense | Smallest model — baseline for minimum viable quality on regulatory content |
-| Phi-4 Mini Reasoning | Microsoft | 3.8B | Dense | Reasoning-optimized small model — tests whether specialized training compensates for limited parameters |
-| Gemma 4 E4B | Google | 8B total / 4B active | MoE | Tests whether MoE efficiency (only 4B active parameters) delivers comparable quality to dense 8B models |
-| Qwen3 8B | Alibaba | 8B | Dense | Strong general-purpose model — benchmark for the 8B dense category |
-| Gemma 4 12B QAT | Google | 12B | Dense (QAT) | Quantization-Aware Trained — tests whether QAT improves accuracy over standard quantization at this size |
-| Ministral 3 14B Reasoning | Mistral AI | 14B | Dense | Largest model in the evaluation — upper bound for quality on 16 GB hardware |
+## 3. Configure local inference and embeddings
 
-All models were sourced from LM Studio's model library in GGUF format. Quantization levels were selected to balance quality and memory footprint within the 16 GB constraint.
+Start LM Studio's server at the intended local endpoint and check Metal acceleration where available. Verify the actual listening interface and loopback-only exposure if that is the intended boundary.
 
----
+In AnythingLLM, select the LM Studio provider and base URL `http://localhost:1234/v1`, a local embedding provider, and LanceDB. Record exact settings. Disable unneeded external connectors, agent tools, or cloud providers. Review download, update, and telemetry behaviour separately; configuration alone does not prove that no outbound traffic occurs.
 
-## Installation
+## 4. Prepare and ingest the corpus
 
-### LM Studio
+Use [document-sources.md](document-sources.md) for the source inventory and original download links. Record exact source versions and provenance before ingestion. Create a workspace named **DORA Technical Implementation Advisor** and ingest the 18 baseline documents. Confirm that extraction succeeded, especially for PDF tables, and record document and chunk counts.
 
-Download from [lmstudio.ai](https://lmstudio.ai/) (macOS Apple Silicon version). After installation, download the desired model via the Search tab, then start the local server on the Local Server tab. The server runs at `http://localhost:1234` and must remain active during all AnythingLLM queries.
+Do not count `.gitkeep` placeholders or assume that source PDFs are committed. Confirm the local embedding artifact has been obtained before attempting offline use.
 
-Verify the Metal backend is active in the server settings — this enables GPU acceleration on Apple Silicon.
+## 5. Apply workspace settings
 
-### AnythingLLM
+Set Query mode, Top-K **6**, and similarity threshold **0.25** where supported. Record the threshold's interpretation for the installed version; it is a project setting rather than a validated optimum. Record chunk size, overlap, context window, temperature, sampling parameters, maximum output length, and conversation/reset policy.
 
-Download from [anythingllm.com](https://anythingllm.com/download) (macOS Desktop version).
+Copy the prompt from [system-prompt.md](../config/system-prompt.md). Keep a snapshot or digest of the prompt used for each run.
 
-Configuration:
-- LLM Preference → LM Studio, Base URL: `http://localhost:1234/v1`
-- Embedding Preference → AnythingLLM built-in embedder
-- Vector Database → LanceDB (default)
+## 6. Check retrieval and source support
 
-### Workspace Configuration
+Use a public regulatory query. Inspect retrieved chunks and compare each legal statement with the official source. Check that citations point to supporting text, that proposed technologies are labelled as examples, and that missing context leads to a bounded answer. A plausible response does not establish successful retrieval or factual correctness.
 
-Create a workspace named "DORA Technical Implementation Advisor" and upload all documents from the three knowledge base levels (9 PDFs + 6 Markdown files + 3–4 context PDFs).
+## 7. Run the planned evaluation
 
-Workspace settings:
-- Chat Mode: **Query** (restricts answers to document content — reduces hallucination)
-- Top-K: **6** (number of chunks retrieved per query)
-- Similarity Threshold: **0.25**
+Use the 30 cases in [test-queries.md](../tests/test-queries.md) and the recording procedure in [evaluation-results.md](../tests/evaluation-results.md). The methodology is planned; no completed comparative results are evidenced in the supplied repository.
 
-The system prompt is documented in [`config/system-prompt.md`](../config/system-prompt.md).
+Keep corpus, prompt, retrieval settings, generation settings, and reset policy constant where feasible. Document any necessary model-specific changes and their effect on comparability. Save raw responses and retrieved context, not only averages.
 
----
+## Privacy and security review
 
-## Evaluation Methodology
+Use public documents and synthetic prompts until the deployment has been assessed. Review storage and deletion of files, embeddings, conversation history, logs, caches, and backups; host access and encryption; application provenance and updates; server exposure; and outbound network behaviour. Local-first architecture does not establish GDPR compliance, zero telemetry, or suitability for a bank's internal network.
 
-Each model was evaluated using 30 test queries (documented in [`tests/test-queries.md`](../tests/test-queries.md)) organized in three rounds of increasing complexity:
+The project does not include a network trace, penetration test, organisational approval, or evidence of production operation. Prompt instructions are behavioural guidance, not an access control or a reliable defence against prompt injection.
 
-- **Round 1** (Q1–Q10): Basic factual retrieval — tests whether the RAG retrieves correct regulatory references
-- **Round 2** (Q11–Q20): Technical implementation queries — tests whether responses include concrete controls, tools, and actionable guidance
-- **Round 3** (Q21–Q30): Complex cross-pillar queries — tests synthesis across multiple DORA chapters and RTS documents
+## Troubleshooting and evidence
 
-Scoring uses a 1–5 scale across four criteria: accuracy of regulatory citations, completeness of technical implementations, specificity of tool recommendations, and absence of hallucinated requirements.
-
-The same workspace, embedding, and Top-K configuration were maintained across all model evaluations to ensure comparability. Only the LLM model was changed between runs.
-
-Full results are documented in [`tests/evaluation-results.md`](../tests/evaluation-results.md).
-
----
-
-## Source Document Authenticity
-
-All Level 1 regulatory documents were downloaded directly from EUR-Lex via HTTPS. Each document was validated against its CELEX number, Official Journal reference, and cross-references to other DORA instruments. See the Source Authenticity section in [`document-sources.md`](document-sources.md) for the full verification methodology.
+| Observation | Action and evidence to retain |
+| --- | --- |
+| No relevant retrieval | Check extraction, embeddings, indexing, and settings; save retrieved passages. |
+| Incorrect legal citation | Check the official article; record whether retrieval or generation caused the error. |
+| Model cannot load / out of memory | Record artifact and settings, failure, and any changes; do not fabricate a score. |
+| Unexpected network connection | Identify component and purpose; adjust configuration or controls and verify again. |
+| Corpus or prompt changes | Create a new configuration snapshot and rerun affected cases. |

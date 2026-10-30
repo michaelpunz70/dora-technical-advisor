@@ -1,5 +1,13 @@
 # DORA Pillar 2 — ICT-Related Incident Management, Classification, and Reporting
 
+## Interpretation and assurance status
+
+**Editorial revision: 30 October 2026. Human legal/control review remains open.** This document is an author-created working mapping, not an authoritative statement or evidence of implemented controls. Regulatory summaries must be checked against the current official text and entity-specific applicability. This revision corrects selected identified issues; it is not a paragraph-by-paragraph legal assurance opinion.
+
+**Reading rules:** technical designs, products, numeric thresholds, internal SLAs, review cadences, staffing choices, and maturity targets in implementation sections are project examples unless an exact source provision expressly supports them. They are not universal regulatory minima. Priority labels are project judgements. Evidence lists are requests for material to collect, not assertions that it exists or is sufficient. ISO/NIST cross-references are interpretive and require edition-specific review.
+
+For each adopted control, record: provision and applicability rationale; control objective and design; accountable owner; evidence artifact, period, and location; design and operating-effectiveness checks; result, gap, remediation owner, and due date. Use [the mapping review procedure](../../docs/mapping-review.md) before relying on this material.
+
 ## Regulatory Scope
 
 - **DORA Articles**: 17–23 (Chapter III)
@@ -8,13 +16,13 @@
   - Commission Delegated Regulation (EU) 2025/301 — content of incident reports, time limits for reporting
   - Commission Implementing Regulation (EU) 2025/302 — standard forms, templates, and procedures for reporting
 - **Applicability**: All financial entities (simplified reporting for microenterprises under Art. 15–16)
-- **In force since**: 17 January 2025 (RTS 2024/1772); February 2025 (RTS 2025/301 + ITS 2025/302)
+- **Dates**: DORA applies from 17 January 2025; verify each supporting instrument’s own entry-into-force and application provisions.
 
 ---
 
 ## Art. 17 — ICT-Related Incident Management Process
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities must define, establish, and implement an ICT-related incident management process to detect, manage, and notify ICT-related incidents. They must record all ICT-related incidents and significant cyber threats. They must establish appropriate procedures and processes to ensure consistent and integrated monitoring, handling, and follow-up of ICT-related incidents, ensuring that root causes are identified, documented, and addressed to prevent recurrence.
 
@@ -25,7 +33,7 @@ The incident management process must:
 - Set out plans for communication to staff, external stakeholders, and media, as well as for client notification and escalation to senior management
 - Ensure reporting of at least major ICT-related incidents to relevant senior management and the management body, explaining the impact, response, and additional controls to be established
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Incident management process framework:**
 - Document a formal Incident Response Plan (IRP) covering the full lifecycle: Preparation → Detection → Analysis → Containment → Eradication → Recovery → Post-Incident Review
@@ -44,7 +52,7 @@ The incident management process must:
 - Automate ticket creation from SIEM alerts for qualifying events
 - Maintain a single source of truth: every incident, whether detected internally or reported by a third party, enters the same tracking system
 - Implement real-time dashboards showing: open incidents by severity, MTTD, MTTR, incidents by category, trend over time
-- Retain incident records for a minimum of 5 years (audit and regulatory review purposes)
+- Define and justify incident-record retention against applicable law, supervisory instructions, privacy requirements, and internal policy; five years is a project example, not a universal DORA minimum established here.
 
 **Roles and responsibilities:**
 - Define an Incident Response Team (IRT) with clear roles: Incident Commander, Technical Lead, Communications Lead, Legal/Compliance Lead, Third-Party Liaison
@@ -71,7 +79,7 @@ The incident management process must:
 - **Evidence Collection**: Velociraptor (open-source), CyLR (open-source), KAPE
 - **Playbook Management**: Playbooks stored in Confluence/Wiki with version control, or integrated into SOAR platform
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Documented Incident Response Plan with annual review date
 - Incident playbooks for each major scenario
@@ -87,34 +95,32 @@ The incident management process must:
 
 ## Art. 18 — Classification of ICT-Related Incidents and Cyber Threats
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities must classify ICT-related incidents and determine their impact based on criteria defined in the RTS 2024/1772. An incident is classified as "major" when it meets specific materiality thresholds. Financial entities must also classify cyber threats as "significant" based on criteria including the criticality of the services at risk, the number of clients potentially affected, and the geographical spread.
 
 ### RTS 2024/1772 — Classification Criteria
 
-The RTS defines **seven primary classification criteria** for ICT-related incidents. An incident is classified as **major** if:
-- It affects critical services AND the data loss threshold (criterion 5b) is met; OR
-- It affects critical services AND two or more of the other materiality thresholds are met
+Use Articles 1–9 together. Article 8 combines the critical-services condition with the applicable Article 9 materiality tests; a confidentiality event alone is not an automatic universal major-incident trigger. In particular, Article 9(5)(b) concerns successful malicious unauthorised access that may result in data losses, not every confidentiality breach.
 
-**The seven criteria are:**
+| Criterion family | Review required |
+| --- | --- |
+| Clients, financial counterparts, transactions | Assess affected-service denominators, relevant clients/counterparts, counts and transaction values under Articles 1 and 9(1). |
+| Reputation | Apply the conditions in Articles 2 and 9(2); do not use a generic media score. |
+| Duration and downtime | Distinguish incident duration over 24 hours from downtime over two hours for ICT services supporting CIFs; apply Articles 3 and 9(3). |
+| Geographical spread | Assess impact in two or more Member States under Articles 4 and 9(4). |
+| Data losses | Assess availability, authenticity, integrity and confidentiality and the distinct conditions in Articles 5 and 9(5). |
+| Critical services | Apply Article 6, not only an informal asset tier. |
+| Economic impact | Apply Articles 7 and 9(6), including the EUR 100,000 threshold and prescribed cost treatment. |
 
-| # | Criterion | Description | Materiality Threshold Examples |
-|---|---|---|---|
-| 1 | Clients affected | Number of clients who cannot access or use services | >10% of all clients, or >100,000 clients, or specific amounts by entity type |
-| 2 | Reputational impact | Media coverage, regulatory attention, client complaints | Significant media coverage, formal complaints, potential regulatory sanctions |
-| 3 | Duration | How long the service is unavailable or degraded | >2 hours for critical services |
-| 4 | Geographical spread | Number of Member States affected | ≥2 Member States |
-| 5 | Data losses | Integrity, confidentiality, or availability of data compromised | 5a: availability/integrity/authenticity impact on critical services; 5b: confidentiality breach affecting any data |
-| 6 | Criticality of services | Whether the incident affects critical or important functions | Critical or important function impacted |
-| 7 | Economic impact | Direct and indirect costs and losses | Exceeds or likely to exceed entity-specific thresholds |
+Check the complete Article 8 logic, aggregation of recurring incidents where applicable, and current source wording before automating any classification decision. The table is an index, not a sufficient executable specification.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Automated classification engine:**
 - Build or configure an automated incident classification workflow in the incident management platform that evaluates each incident against all seven RTS criteria in real-time
 - Pre-populate entity-specific thresholds: total client count, critical service list, Member State presence, economic impact thresholds
-- Implement a decision tree: Does the incident affect a critical service? → Yes → Evaluate all 7 criteria against thresholds → Count how many thresholds are breached → If criterion 5b (confidentiality) alone: MAJOR. If ≥2 other criteria met: MAJOR
+- Implement a reviewed decision table reproducing RTS 2024/1772 Arts. 8–9, including the critical-services condition, the two materiality paths, relevant exclusions, and recurring-incident assessment. Retain the classification inputs and reviewer decision.
 - Generate an automatic preliminary classification within 30 minutes of incident detection to support the 4-hour initial notification deadline
 - Allow for reclassification: an initially minor incident can be upgraded to major if its impact grows — monitor open incidents continuously against thresholds
 
@@ -155,7 +161,7 @@ The RTS defines **seven primary classification criteria** for ICT-related incide
 - **Client Impact Dashboards**: Custom dashboards pulling from core banking/CRM systems, integrated with incident platform
 - **Threat Intelligence for Significant Cyber Threats**: MISP (open-source), OpenCTI (open-source), FS-ISAC alerts, national CERT advisories
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Documented classification methodology aligned with RTS 2024/1772 criteria
 - Entity-specific materiality thresholds (documented and approved)
@@ -170,32 +176,32 @@ The RTS defines **seven primary classification criteria** for ICT-related incide
 
 ## Art. 19 — Reporting of Major ICT-Related Incidents and Voluntary Notification of Significant Cyber Threats
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities must report major ICT-related incidents to the relevant competent authority (NCA). The reporting follows a three-stage process with strict deadlines:
 
-1. **Initial notification**: within 4 hours of classifying the incident as major (and no later than 24 hours after detection)
+1. **Initial notification**: as early as possible within the applicable limits in RTS 2025/301 Art. 5(1)(a), using awareness and classification timestamps. Article 5(2) addresses classification later than 24 hours after awareness; do not treat the awareness limit as unconditional regardless of later classification.
 2. **Intermediate report**: within 72 hours of the initial notification — detailed impact assessment, root cause (if known), and measures taken
-3. **Final report**: within 1 month of sending the intermediate report — confirmed root cause analysis, complete impact figures, remediation actions taken and planned, lessons learned
+3. **Final report**: no later than one month after the intermediate report or, where applicable, the latest updated intermediate report — confirmed root cause analysis, complete impact figures, remediation actions taken and planned, lessons learned
 
 Financial entities must also notify affected clients without undue delay when the incident impacts their financial interests — describing the measures taken to mitigate the adverse effects. This client notification obligation is one of DORA's most operationally demanding requirements.
 
 Financial entities may voluntarily report significant cyber threats to the NCA when they consider the threat relevant to the financial system, service users, or clients.
 
-Credit institutions classified as significant under the SSM must also report to the ECB.
+Determine the competent authority, submission channel, and onward-sharing arrangements for the entity; do not infer a duplicate direct ECB submission from SSM status alone.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
-**Reporting workflow automation:**
-- Configure the incident management platform with automated timers that start when an incident is classified as major:
-  - T+0h: Classification as major → clock starts
-  - T+4h: DEADLINE for initial notification submission
-  - T+72h: DEADLINE for intermediate report submission
-  - T+72h + 1 month: DEADLINE for final report submission
-- Build automated reminders: alert at T+2h (initial notification due soon), T+48h (intermediate report due soon), T+3 weeks (final report due soon)
-- Implement a pre-populated reporting template aligned with ITS 2025/302 fields — auto-fill entity identification data, incident ID, detection timestamp, classification criteria results
+**Reporting workflow automation — implement the actual clocks:**
+- Record awareness, detection, classification, initial submission, intermediate submissions, and recovery as separate timestamps.
+- Calculate the initial deadline using RTS 2025/301 Art. 5(1)(a) and the later-classification case in Art. 5(2).
+- Calculate the intermediate deadline from submission of the initial notification, not from classification. Track required updates and recovery-triggered updates.
+- Calculate the final deadline from the relevant intermediate report, including the latest updated intermediate report where applicable.
+- Implement delay escalation and check the scope of any weekend/bank-holiday rule. A credit institution must not assume it can use an extension available to other entity categories.
+- Keep human approval, submission receipts, and a record of the rule version used by the deadline calculator.
+- Use the required ITS 2025/302 templates and the reporting channel currently specified for the entity.
 
-**Initial notification content (within 4 hours):**
+**Initial notification content (subject to the applicable Article 5 clock):**
 - Entity identification (LEI, name, NCA reference number)
 - Incident unique identifier
 - Date and time of detection
@@ -244,14 +250,14 @@ Credit institutions classified as significant under the SSM must also report to 
 - Align with GDPR Art. 34 when personal data breach triggers notification to data subjects
 
 **Multi-authority coordination:**
-- If the incident also constitutes a personal data breach → notify GDPR supervisory authority within 72 hours under GDPR Art. 33
+- If personal data is affected: conduct a separate GDPR Article 33/34 trigger, risk, clock, and recipient assessment; obtain the relevant source and qualified review rather than assuming every breach has identical notification duties.
 - If the incident involves suspected criminal activity → notify law enforcement
-- For cross-border incidents → the NCA forwards details to NCAs in other affected Member States (under RTS 2024/1772 Art. 11)
-- For SSM significant credit institutions → ECB notification in parallel with NCA
-- If the incident affects payment services → potential PSD2 reporting obligations in parallel
+- For cross-border incidents: check authority-sharing arrangements under DORA and current instructions; RTS 2024/1772 should not be used as an unsupported citation for the forwarding route.
+- For SSM significant credit institutions: verify the currently applicable reporting route and authority coordination instructions.
+- For payment services: check current sector-specific reporting rules and DORA interactions; do not assume historical PSD2 reporting remains an additional duplicate submission.
 
 **ECB reporting for significant institutions:**
-- SSM significant institutions must submit the initial notification to the NCA, which subsequently transmits to the ECB
+- Verify the designated recipient, submission route, and onward-sharing process for the institution; archive the authority instructions used.
 - Coordinate with the ECB's SSM cyber incident reporting mechanism
 - Ensure reporting templates are compatible with ECB requirements
 
@@ -263,7 +269,7 @@ Credit institutions classified as significant under the SSM must also report to 
 - **Client Notification**: Mass notification systems (Everbridge, SendGrid for email at scale), secure messaging via banking app push notifications
 - **Regulatory Tracking**: GRC platform to track all regulatory submissions, deadlines, and follow-ups
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - All incident reports submitted to the NCA (initial, intermediate, final) with timestamps proving compliance with deadlines
 - Internal workflow records showing the classification-to-submission timeline
@@ -278,14 +284,14 @@ Credit institutions classified as significant under the SSM must also report to 
 
 ## Art. 20 — Harmonisation of Reporting Content and Templates
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 This article provides the legal basis for the ESAs to develop RTS on the content of incident reports (RTS 2025/301) and ITS on the standard forms, templates, and procedures (ITS 2025/302). The reporting framework must be proportionate and consistent with the approach for incident reporting under NIS2 Directive (EU) 2022/2555.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **ITS 2025/302 template compliance:**
-- Implement the official XBRL/XML reporting template provided by the ESAs
+- Implement the current ITS forms and the format required by the receiving authority; do not assume a universal XBRL/XML submission format
 - Validate all fields before submission — the template includes mandatory and conditional fields with validation rules
 - Key mandatory fields in the template:
   - Entity identification section: LEI code, entity name, entity type, NCA of reference
@@ -307,7 +313,7 @@ This article provides the legal basis for the ESAs to develop RTS on the content
 - Implement version control for reports: if the intermediate or final report updates previously submitted data, track the delta
 
 **Consistency with NIS2 reporting:**
-- If the entity is also subject to NIS2 (e.g., a bank that is also designated as an operator of essential services), coordinate DORA and NIS2 incident reports
+- Assess DORA’s sector-specific relationship with NIS2 and any national CSIRT routing requirements; do not presume an additional duplicate NIS2 report from an entity label alone
 - Under DORA Art. 19(1) second subparagraph, Member States may require financial entities to also submit incident reports to CSIRTs designated under NIS2 — check national transposition requirements
 - Avoid duplicate reporting where possible by using the DORA report as the primary submission and coordinating with NCA on NIS2 channel
 
@@ -317,7 +323,7 @@ This article provides the legal basis for the ESAs to develop RTS on the content
 - **Reporting Automation**: Custom middleware connecting incident platform API → template population → NCA portal submission
 - **Validation**: NCA-provided validation rules or custom validation scripts
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Completed report templates for all reported incidents (archived copies with submission timestamps)
 - Validation reports showing all mandatory fields were completed before submission
@@ -330,15 +336,15 @@ This article provides the legal basis for the ESAs to develop RTS on the content
 
 ## Art. 21 — Centralisation of Reporting of Major ICT-Related Incidents
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
-The ESAs must prepare a joint report assessing the feasibility of further centralising incident reporting through a single EU Hub. This article establishes the mandate for the ESAs to explore whether a single EU-level reporting hub could reduce the reporting burden while maintaining supervisory effectiveness. Until such centralisation is implemented, reporting remains to the national competent authority.
+The ESAs must prepare a joint report assessing the feasibility of further centralising incident reporting through a single EU Hub. This article establishes the mandate for the ESAs to explore whether a single EU-level reporting hub could reduce the reporting burden while maintaining supervisory effectiveness. The current operational reporting route must be verified against the applicable competent-authority instructions; this document does not establish the present status of a future EU hub.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
-**Current state (no EU Hub yet — report to NCA):**
+**Reporting route — verify current authority instructions:**
 - Identify the correct NCA for the entity type and Member State of authorisation
-- For credit institutions in Eurozone SSM countries: report to NCA, who forwards to ECB
+- For SSM credit institutions: confirm the current reporting route and onward-sharing process for the institution.
 - Maintain an up-to-date contact register for each relevant NCA reporting channel
 - Monitor ESA communications for any updates on the EU Hub project timeline
 
@@ -347,7 +353,7 @@ The ESAs must prepare a joint report assessing the feasibility of further centra
 - Implement API-based submission capability that can be redirected to a future EU Hub without redesigning the entire workflow
 - Standardise internal incident data to the ITS 2025/302 schema regardless of the current NCA submission format
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Documentation of NCA reporting channel and contacts
 - Internal workflow documentation showing adaptability to future centralised reporting
@@ -358,11 +364,11 @@ The ESAs must prepare a joint report assessing the feasibility of further centra
 
 ## Art. 22 — Supervisory Feedback
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Upon receipt of the initial notification and subsequent reports, the competent authority must acknowledge receipt and may provide relevant and proportionate feedback to the financial entity, including anonymised threat intelligence, information on similar threats across the sector, and guidance on remedies. This feedback does not relieve the financial entity of its responsibility for handling the incident and its consequences.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Feedback integration process:**
 - Establish a process to receive, review, and act upon supervisory feedback:
@@ -382,7 +388,7 @@ Upon receipt of the initial notification and subsequent reports, the competent a
 - **Regulatory Liaison Management**: GRC platform with regulatory interaction tracking, dedicated mailbox for NCA communications
 - **Threat Intelligence Distribution**: MISP (open-source) for distributing NCA-shared IOCs to internal detection systems
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Log of all supervisory feedback received with response actions
 - Records of anonymised threat intelligence distributed internally
@@ -394,13 +400,13 @@ Upon receipt of the initial notification and subsequent reports, the competent a
 
 ## Art. 23 — Operational or Security Payment-Related Incidents Concerning Credit Institutions, Payment Institutions, Account Information Service Providers, and Electronic Money Institutions
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 This article provides specific provisions for payment-related incidents for entities subject to PSD2. Credit institutions, payment institutions, and e-money institutions must apply the DORA incident management framework (Art. 17–20) to operational or security payment-related incidents, replacing the PSD2 incident reporting requirements. This ensures a single reporting framework for all ICT-related incidents, including payment-specific ones.
 
 Payment-related incidents are defined as incidents that have an adverse impact on the availability, authenticity, integrity, or confidentiality of payment-related data, or on the payment-related services provided by the financial entity.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Unified reporting framework for payment incidents:**
 - Merge the previously separate PSD2 incident reporting process into the DORA reporting framework — there should be ONE incident management process covering both
@@ -438,7 +444,7 @@ Payment-related incidents are defined as incidents that have an adverse impact o
 - **Payment Network Monitoring**: SWIFT Alliance monitoring, card scheme operational dashboards
 - **Client Communication**: Banking app push notification infrastructure, automated SMS gateway, status page (StatusPage, Uptime Kuma)
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Unified incident management process document covering both ICT and payment-related incidents
 - Mapping document: former PSD2 classification → DORA RTS 2024/1772 classification
@@ -452,94 +458,45 @@ Payment-related incidents are defined as incidents that have an adverse impact o
 
 ---
 
-## Incident Reporting Quick Reference — Timelines
+## Incident Reporting Quick Reference — Clocks and Decisions
 
-```
-INCIDENT DETECTION
-│
-├─ T+0h: Incident detected
-│   → Start internal triage immediately
-│   → Evaluate against RTS 2024/1772 classification criteria
-│
-├─ T+4h MAX: Submit INITIAL NOTIFICATION to NCA
-│   (Must be within 4 hours of classifying the incident as major,
-│    and no later than 24 hours after detection)
-│   → Entity ID, incident ID, brief description
-│   → Classification criteria met
-│   → Ongoing/resolved status
-│   → Preliminary impact
-│
-├─ T+72h MAX: Submit INTERMEDIATE REPORT to NCA
-│   (72 hours from initial notification)
-│   → Updated detailed description and timeline
-│   → Quantified impact across all 7 criteria
-│   → Root cause (preliminary if not confirmed)
-│   → Containment and mitigation measures
-│   → Communication actions taken
-│
-├─ T+72h + 1 MONTH MAX: Submit FINAL REPORT to NCA
-│   (1 month from intermediate report)
-│   → Confirmed root cause analysis
-│   → Final verified impact figures
-│   → Remediation actions completed and planned
-│   → Lessons learned
-│   → Framework/control improvements
-│
-└─ CLIENT NOTIFICATION: Without undue delay
-    → Whenever the incident impacts client financial interests
-    → Nature of incident, mitigation measures, recommended client actions
-```
+| Stage | Review rule |
+| --- | --- |
+| Awareness and detection | Record separately where they differ; preserve the facts supporting each timestamp. |
+| Classification | Apply the reviewed RTS 2024/1772 Arts. 8–9 decision table and relevant recurring-incident rules. Do not classify solely by an informal asset tier or a confidentiality label. |
+| Initial notification | Use RTS 2025/301 Art. 5(1)(a): as early as possible, within four hours of major classification and no later than 24 hours after awareness; apply the later-classification rule in Art. 5(2). |
+| Intermediate report | Deadline runs from submission of the initial notification; account for updates, including recovery-related updates. |
+| Final report | Deadline runs from the relevant intermediate report or latest updated intermediate report where applicable. |
+| Exceptions and delay | Check the full Article 5 rules and entity-specific scope. Credit institutions must not assume a weekend/bank-holiday extension. |
+| Client communication | Assess the Article 19 conditions, including impact on clients’ financial interests; distinguish this from authority reporting. |
 
----
+### Classification automation boundary
 
-## Incident Classification Decision Tree
+Before implementing a decision engine, verify every threshold, denominator, aggregation rule, service-criticality condition, and exception against RTS 2024/1772. Test boundary and recurring-incident cases. This documentation is not an executable legal specification. Retain analyst review and reclassification capability.
 
-```
-STEP 1: Does the incident affect a CRITICAL or IMPORTANT function?
-│
-├─ NO → Classify as non-major → Record and manage internally
-│        (still log in incident register, no NCA reporting obligation)
-│
-└─ YES → Proceed to STEP 2
-         │
-         STEP 2: Evaluate all 7 materiality criteria against thresholds
-         │
-         ├─ Criterion 5b (Confidentiality/data breach): Met?
-         │   └─ YES → CLASSIFY AS MAJOR → Trigger reporting
-         │
-         ├─ Two or more OTHER criteria (1,2,3,4,5a,6,7): Met?
-         │   └─ YES → CLASSIFY AS MAJOR → Trigger reporting
-         │
-         └─ Neither condition met?
-             └─ Classify as non-major → Record internally
-                BUT: CONTINUE MONITORING — if impact escalates
-                and thresholds are later breached, RECLASSIFY as major
-                and trigger reporting from that point
-```
+### Parallel obligations — assess triggers separately
 
----
+| Regime or recipient | Review required |
+| --- | --- |
+| DORA competent authority | Major-incident classification, reporting clocks, templates, and current submission route. An outage or ransomware label alone does not determine the reporting outcome. |
+| Data protection authority / individuals | Separate GDPR Articles 33–34 analysis, including awareness, risk/high-risk conditions, exceptions, and applicable communications; a breach need not involve exfiltration to be relevant. |
+| ECB / other supervisory authorities | Current entity-specific recipient and onward-sharing arrangements; do not assume duplicate direct reporting. |
+| CSIRT / NIS2 channels | Sector-specific DORA interaction and applicable national routing provisions. |
+| Law enforcement / payment schemes | Applicable legal or contractual duties and current arrangements; do not infer a universal notification rule from the incident name. |
 
-## Parallel Reporting Obligations Matrix (for Credit Institutions)
-
-| Trigger | DORA (NCA) | GDPR (DPA) | Law Enforcement | ECB (SSM) | Card Schemes | NIS2 (CSIRT) |
-|---|---|---|---|---|---|---|
-| Major ICT incident | YES — 4h/72h/1m | If personal data breach | If criminal activity suspected | If SSM significant institution | If payment cards affected | Check national requirement |
-| Data breach (PII) | If meets DORA thresholds | YES — 72h | If criminal activity suspected | Via NCA | If cardholder data | Check national requirement |
-| Payment service outage | YES — 4h/72h/1m | If PII involved | Rarely | If SSM significant institution | If scheme services affected | Check national requirement |
-| Ransomware | YES — 4h/72h/1m | If data exfiltrated | YES — recommended | If SSM significant institution | If payment data at risk | Check national requirement |
-| Significant cyber threat | Voluntary — recommended | N/A | If intelligence value | Via NCA | N/A | Check national requirement |
-
----
+Additional legal texts not in the baseline corpus must be obtained and reviewed before relying on cross-regime conclusions.
 
 ## Incident Response Maturity Metrics
 
 Financial entities should track these KPIs to demonstrate continuous improvement of their incident management capabilities:
 
-| Metric | Description | Target for Banking |
+The values below are illustrative internal metrics, not regulatory service-level guarantees. Classification may legitimately change as new evidence emerges; do not discourage necessary reclassification to improve a metric.
+
+| Metric | Description | Illustrative internal target |
 |---|---|---|
 | MTTD (Mean Time to Detect) | Time from incident occurrence to detection | < 1 hour for critical services |
 | MTTC (Mean Time to Classify) | Time from detection to classification (major/non-major) | < 30 minutes |
-| MTTN (Mean Time to Notify) | Time from classification to initial NCA notification | < 4 hours (regulatory deadline) |
+| MTTN (Mean Time to Notify) | Time from classification to initial NCA notification | Track actual Article 5 deadline compliance per case; a mean alone is insufficient |
 | MTTR (Mean Time to Respond/Contain) | Time from detection to containment | < 4 hours for critical services |
 | MTTREC (Mean Time to Recover) | Time from detection to full service restoration | Within defined RTO per function |
 | Report accuracy | Percentage of final reports requiring no corrections after submission | > 95% |
@@ -567,11 +524,12 @@ Financial entities should track these KPIs to demonstrate continuous improvement
 
 ## Document Metadata
 
-- **Version**: 1.0
+- **Version**: 1.0 — revised documentation; evaluation pending
 - **Knowledge base**: DORA Technical Implementation Advisor
 - **Pillar**: 2 of 5 — ICT-Related Incident Management, Classification, and Reporting
 - **DORA Articles covered**: 17, 18, 19, 20, 21, 22, 23
 - **RTS/ITS covered**: RTS 2024/1772 (classification), RTS 2025/301 (reporting content), ITS 2025/302 (templates)
 - **Target entity type**: Credit institution (bank)
 - **Proportionality tier**: Full framework (not simplified)
-- **Last updated**: July 2026
+- **Original content date**: July 2026
+- **Editorial revision date**: 30 October 2026

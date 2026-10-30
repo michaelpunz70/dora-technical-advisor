@@ -1,17 +1,25 @@
 # DORA Pillar 5 — Information Sharing
 
+## Interpretation and assurance status
+
+**Editorial revision: 30 October 2026. Human legal/control review remains open.** This document is an author-created working mapping, not an authoritative statement or evidence of implemented controls. Regulatory summaries must be checked against the current official text and entity-specific applicability. This revision corrects selected identified issues; it is not a paragraph-by-paragraph legal assurance opinion.
+
+**Reading rules:** technical designs, products, numeric thresholds, internal SLAs, review cadences, staffing choices, and maturity targets in implementation sections are project examples unless an exact source provision expressly supports them. They are not universal regulatory minima. Priority labels are project judgements. Evidence lists are requests for material to collect, not assertions that it exists or is sufficient. ISO/NIST cross-references are interpretive and require edition-specific review.
+
+For each adopted control, record: provision and applicability rationale; control objective and design; accountable owner; evidence artifact, period, and location; design and operating-effectiveness checks; result, gap, remediation owner, and due date. Use [the mapping review procedure](../../docs/mapping-review.md) before relying on this material.
+
 ## Regulatory Scope
 
 - **DORA Articles**: 45 (Chapter VI)
 - **Key RTS/ITS**: None — this pillar has no dedicated Level 2 technical standards
 - **Applicability**: All financial entities (voluntary participation)
-- **Legal basis**: Art. 45 provides the legal framework that removes previous legal uncertainty around sharing threat intelligence under data protection and competition law
+- **Legal basis**: Art. 45 permits qualifying information-sharing arrangements subject to safeguards; it does not displace GDPR, confidentiality, or competition-law obligations
 
 ---
 
 ## Art. 45 — Information-Sharing Arrangements
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities may exchange amongst themselves cyber threat information and intelligence, including indicators of compromise (IOCs), tactics, techniques and procedures (TTPs), cybersecurity alerts, and configuration tools, to the extent that such information and intelligence sharing:
 
@@ -21,9 +29,9 @@ Financial entities may exchange amongst themselves cyber threat information and 
 
 Financial entities must notify competent authorities of their participation in information-sharing arrangements.
 
-Where financial entities receive cyber threat information or intelligence shared by other financial entities, or through information-sharing arrangements, they must implement effective detection capabilities based on that information — incorporating the shared indicators and threat signatures into their monitoring systems.
+Operationalising relevant received intelligence is a proposed control supporting detection capabilities. Article 45 should not be read as a universal obligation to deploy every received indicator or signature; validate relevance, reliability, handling restrictions, and false-positive risk first.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Establishing or joining information-sharing arrangements:**
 - Identify and evaluate relevant information-sharing communities for the banking sector:
@@ -48,14 +56,14 @@ Where financial entities receive cyber threat information or intelligence shared
 - Update the notification if the entity joins or exits additional arrangements
 
 **Traffic Light Protocol (TLP) implementation:**
-- Adopt the TLP 2.0 standard for classifying shared information:
+- Use [FIRST TLP 2.0](https://www.first.org/tlp/) handling labels; TLP is not a legal basis for disclosure or an automated enforcement mechanism:
 
 | TLP Level | Meaning | Handling |
 |---|---|---|
 | TLP:RED | For named recipients only | Do not share outside the specific exchange; for eyes only of the individuals present |
 | TLP:AMBER+STRICT | Limited disclosure, restricted to the organisation | May be shared within the organisation on a need-to-know basis only |
-| TLP:AMBER | Limited disclosure, restricted to the community | May be shared with members of the same community/sector |
-| TLP:GREEN | Limited disclosure, restricted to the community at large | May be shared within the financial sector peer community |
+| TLP:AMBER | Limited disclosure | On a need-to-know basis within the recipient organisation and its clients; subject to source restrictions. |
+| TLP:GREEN | Limited disclosure within the community | Share within the defined community, not publicly or outside that community. |
 | TLP:CLEAR | No restrictions | May be shared freely, subject to standard copyright rules |
 
 - Configure SIEM, TIP, and email systems to enforce TLP handling rules
@@ -103,7 +111,7 @@ Where financial entities receive cyber threat information or intelligence shared
 **Competition law safeguards:**
 - Do not share commercially sensitive information through information-sharing arrangements
 - Ensure sharing is limited to cybersecurity information — not business intelligence
-- Maintain records of what was shared and by whom to demonstrate compliance
+- Maintain records of what was shared and by whom to support review of the applicable obligations
 - Consider legal review of the sharing arrangement's rules of conduct to confirm competition law compliance
 
 ### Tools
@@ -114,7 +122,7 @@ Where financial entities receive cyber threat information or intelligence shared
 - **Automated IOC Deployment**: SOAR playbooks that auto-ingest validated IOCs into IDS/IPS rules, SIEM watchlists, EDR block lists, and firewall rules
 - **TLP Enforcement**: MISP natively supports TLP tagging, email classification plugins for Outlook/Gmail
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Competent authority notification of participation in information-sharing arrangements
 - Information-sharing arrangement agreements with governance rules, data protection provisions, and competition law safeguards
@@ -139,7 +147,7 @@ Where financial entities receive cyber threat information or intelligence shared
 | Level 4 — Proactive | Active contributor | Entity actively shares anonymised intelligence from own incidents, contributes to community reports, has dedicated threat intelligence analyst(s), measures detection improvement from shared intelligence |
 | Level 5 — Collaborative | Strategic intelligence partner | Entity co-develops threat analysis with peers, participates in joint threat hunting exercises, shares detection rules and defensive playbooks, contributes to sector-wide early warning initiatives, tracks intelligence-driven detection metrics |
 
-Financial entities should aim for at least Level 3 to demonstrate meaningful compliance with the spirit of DORA Art. 45.
+The maturity levels above are optional project benchmarks. Article 45 does not require participation or establish a mandatory maturity level. A maturity score is not evidence of legal compliance.
 
 ---
 
@@ -155,11 +163,12 @@ Financial entities should aim for at least Level 3 to demonstrate meaningful com
 
 ## Document Metadata
 
-- **Version**: 1.0
+- **Version**: 1.0 — revised documentation; evaluation pending
 - **Knowledge base**: DORA Technical Implementation Advisor
 - **Pillar**: 5 of 5 — Information Sharing
 - **DORA Articles covered**: 45
 - **RTS/ITS covered**: None (no dedicated Level 2 standards for this pillar)
 - **Target entity type**: Credit institution (bank)
 - **Proportionality tier**: Full framework
-- **Last updated**: July 2026
+- **Original content date**: July 2026
+- **Editorial revision date**: 30 October 2026

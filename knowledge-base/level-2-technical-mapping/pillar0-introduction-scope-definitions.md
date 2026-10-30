@@ -1,5 +1,13 @@
 # DORA — Introduction, Scope, Definitions, and Proportionality (Articles 1–4)
 
+## Interpretation and assurance status
+
+**Editorial revision: 30 October 2026. Human legal/control review remains open.** This document is an author-created working mapping, not an authoritative statement or evidence of implemented controls. Regulatory summaries must be checked against the current official text and entity-specific applicability. This revision corrects selected identified issues; it is not a paragraph-by-paragraph legal assurance opinion.
+
+**Reading rules:** technical designs, products, numeric thresholds, internal SLAs, review cadences, staffing choices, and maturity targets in implementation sections are project examples unless an exact source provision expressly supports them. They are not universal regulatory minima. Priority labels are project judgements. Evidence lists are requests for material to collect, not assertions that it exists or is sufficient. ISO/NIST cross-references are interpretive and require edition-specific review.
+
+For each adopted control, record: provision and applicability rationale; control objective and design; accountable owner; evidence artifact, period, and location; design and operating-effectiveness checks; result, gap, remediation owner, and due date. Use [the mapping review procedure](../../docs/mapping-review.md) before relying on this material.
+
 ## Regulatory Scope
 
 - **DORA Articles**: 1–4 (Chapter I — General Provisions)
@@ -26,7 +34,7 @@ DORA applies from **17 January 2025**.
 
 ### Relevance for Implementation
 
-Art. 1 confirms that DORA is a comprehensive, cross-sectoral regulation — not a guideline or directive that requires national transposition. It applies directly and uniformly across all EU Member States. This means financial entities cannot rely on varying national interpretations; the same requirements apply whether the entity is in Germany, France, Italy, or any other Member State.
+Art. 1 confirms that DORA is a comprehensive, cross-sectoral regulation — not a guideline or directive that requires national transposition. It applies directly and uniformly across all EU Member States. Entity-specific applicability, national options, competent-authority instructions, and supervisory reporting arrangements still require review; direct applicability does not eliminate those distinctions.
 
 ---
 
@@ -81,7 +89,7 @@ When assessing third-party ICT providers (Pillar 4), the entity must determine w
 
 ### Key Definitions for Technical Implementation
 
-DORA Art. 3 contains 63 legal definitions. The following are the most important for interpreting and implementing the technical requirements across all 5 pillars:
+The following are selected working definitions from DORA Article 3; verify numbering and wording against the current official source. They are relevant for interpreting and implementing the technical requirements across all 5 pillars:
 
 ---
 
@@ -116,7 +124,7 @@ A single event or a series of linked events unplanned by the financial entity th
 **Definition 8 — "Major ICT-related incident"**
 An ICT-related incident that has a high adverse impact on the network and information systems that support critical or important functions of the financial entity.
 
-*Implementation relevance*: Only major incidents trigger the reporting obligations under Art. 19. The classification criteria in RTS 2024/1772 (7 criteria with materiality thresholds) determine whether an incident is "major." The entity must have an automated or rapid classification process to meet the 4-hour reporting deadline.
+*Implementation relevance*: Only major incidents trigger the reporting obligations under Art. 19. The classification criteria in RTS 2024/1772 (7 criteria with materiality thresholds) determine whether an incident is "major." A rapid classification process should support the applicable reporting clocks; check RTS 2025/301 Art. 5, including awareness and later-classification conditions. Automation is an implementation option, not a substitute for accountable classification.
 
 ---
 
@@ -206,35 +214,20 @@ Financial entities must implement the requirements of DORA taking into account t
 
 The principle of proportionality ensures that a Global Systemically Important Institution (G-SII) with millions of clients across multiple Member States faces stricter expectations than a small, non-interconnected financial entity with 10 employees.
 
-### How Proportionality Applies Across Pillars
+### Applying proportionality and checking eligibility
 
-| Pillar | Full Framework (large bank) | Simplified/Proportionate (micro/small entity) |
-|---|---|---|
-| 1 — ICT Risk Management | Full framework (Art. 5-14), dedicated ICT risk function, formal risk assessment methodology, comprehensive controls | Simplified framework (Art. 15-16), basic controls, can assign to existing role, less formal documentation |
-| 2 — Incident Reporting | Full classification and reporting (Art. 17-23), all 7 criteria, 4h/72h/1m timeline | Same reporting obligations — no simplification for incident reporting |
-| 3 — Resilience Testing | Full testing programme (Art. 24-25), annual pen testing, potentially TLPT (Art. 26) | Proportionate testing, no mandatory pen testing, no TLPT |
-| 4 — Third-Party Risk | Full lifecycle management (Art. 28-30), Register of Information, concentration risk assessment | Full RoI requirements, but proportionate due diligence and monitoring |
-| 5 — Information Sharing | Voluntary (Art. 45) | Voluntary (Art. 45) |
+DORA Article 4 requires proportionate implementation; it does not create a generic bank-size threshold for opting into Article 16. The simplified ICT risk management framework applies to the entity categories listed in Article 16(1). Microenterprise status and simplified-framework eligibility are distinct concepts and must not be treated as interchangeable.
 
-### Determining Proportionality Tier
+Do not use the original illustrative EUR 5 billion asset or 250-employee thresholds as legal eligibility tests. Likewise, limited cross-border activity or ICT dependency does not alone establish Article 16 eligibility. The microenterprise definition must be checked in Article 3, including its conditions and exclusions; it does not automatically move a credit institution into Article 16.
 
-The competent authority and the entity itself determine the appropriate level of implementation. Key indicators:
-
-**Full framework applies if the entity has:**
-- Total assets above EUR 5 billion
-- More than 250 employees
-- Cross-border operations in multiple Member States
-- Critical market infrastructure role
-- G-SII or O-SII designation
-- Significant retail client base
-
-**Simplified framework may apply if the entity has:**
-- Fewer than 10 employees AND turnover/balance sheet below EUR 2 million (microenterprise under Art. 16(1))
-- Limited ICT dependency
-- No cross-border operations
-- Non-systemic role
-
-**Important**: even under the simplified framework, the entity must still have: a documented ICT risk assessment, basic protection and prevention measures, incident detection and response capability, business continuity arrangements, and participation in the incident reporting framework. Proportionality reduces the depth and formality of implementation — it does NOT exempt entities from the core obligations.
+| Area | Applicability review |
+| --- | --- |
+| ICT risk management | Check Articles 2–4 and 16; identify the applicable framework before selecting controls. |
+| Incident reporting | Check the incident criteria, reporting standards, and entity-specific exceptions; do not infer exemption from size alone. |
+| Resilience testing | Check Articles 24–25 and their distinctions; annual appropriate testing of CIF-supporting systems is not an annual mandate for every listed test method. |
+| TLPT | Check authority identification under Article 26 and RTS 2025/1190, including possible adjustments and exclusions. |
+| Third-party risk | Check the arrangement and whether it supports a critical or important function. |
+| Information sharing | Participation under Article 45 is voluntary; applicable safeguards and notifications still matter. |
 
 ### Relevance for Implementation
 
@@ -246,9 +239,10 @@ The knowledge base in this project is calibrated for a **full-scope credit insti
 
 ## Document Metadata
 
-- **Version**: 1.0
+- **Version**: 1.0 — revised documentation; evaluation pending
 - **Knowledge base**: DORA Technical Implementation Advisor
 - **Coverage**: DORA Articles 1, 2, 3, 4 — General Provisions (Chapter I)
 - **RTS/ITS covered**: None (no Level 2 measures for Chapter I)
 - **Target entity type**: Credit institution (bank)
-- **Last updated**: July 2026
+- **Original content date**: July 2026
+- **Editorial revision date**: 30 October 2026

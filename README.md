@@ -269,3 +269,7 @@ Further improvements should prioritise source version tracking, review of articl
 ## License and source reuse
 
 Project code and original materials are offered under the **MIT License**, subject to the repository's license file. Third-party regulatory texts, standards, frameworks, compilations, and model artifacts retain their own copyright, licensing, and reuse terms. The project's MIT License does not relicense those materials. Check each publisher's terms before redistribution; Level 3 includes materials from different publishers and must not be treated as uniformly EU-institution content.
+
+## Documentation revision — 30 October 2026
+
+The supporting prompt, setup guide, source inventory, evaluation specification, and six mapping files have received an editorial revision to distinguish source-supported requirements from project examples and unverified claims. See [mapping review and open issues](docs/mapping-review.md) and [the change log](CHANGELOG.md). This revision does not establish completed model validation, a full legal review, or control implementation. The original 18-document corpus baseline excludes these additional repository documentation files.

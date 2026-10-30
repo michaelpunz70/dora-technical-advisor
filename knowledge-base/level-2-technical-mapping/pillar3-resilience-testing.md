@@ -1,5 +1,13 @@
 # DORA Pillar 3 — Digital Operational Resilience Testing
 
+## Interpretation and assurance status
+
+**Editorial revision: 30 October 2026. Human legal/control review remains open.** This document is an author-created working mapping, not an authoritative statement or evidence of implemented controls. Regulatory summaries must be checked against the current official text and entity-specific applicability. This revision corrects selected identified issues; it is not a paragraph-by-paragraph legal assurance opinion.
+
+**Reading rules:** technical designs, products, numeric thresholds, internal SLAs, review cadences, staffing choices, and maturity targets in implementation sections are project examples unless an exact source provision expressly supports them. They are not universal regulatory minima. Priority labels are project judgements. Evidence lists are requests for material to collect, not assertions that it exists or is sufficient. ISO/NIST cross-references are interpretive and require edition-specific review.
+
+For each adopted control, record: provision and applicability rationale; control objective and design; accountable owner; evidence artifact, period, and location; design and operating-effectiveness checks; result, gap, remediation owner, and due date. Use [the mapping review procedure](../../docs/mapping-review.md) before relying on this material.
+
 ## Regulatory Scope
 
 - **DORA Articles**: 24–27 (Chapter IV)
@@ -8,24 +16,24 @@
 - **Applicability**:
   - Art. 24–25 (basic testing): ALL financial entities
   - Art. 26–27 (TLPT): Only entities identified by competent authorities based on systemic importance, ICT risk profile, and ICT maturity
-- **In force since**: 17 January 2025 (DORA); 8 July 2025 (RTS 2025/1190)
-- **TLPT deadline**: First mandatory TLPT exercise must be completed before 17 January 2028
+- **Dates**: DORA applies from 17 January 2025; check RTS 2025/1190’s own effective-date provision separately.
+- **TLPT scheduling**: determine the institution’s authority-notified schedule; do not infer a universal first-test completion deadline of 17 January 2028.
 
 ---
 
 ## Art. 24 — General Requirements for the Performance of Digital Operational Resilience Testing
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 All financial entities must establish, maintain, and review a sound and comprehensive digital operational resilience testing programme as an integral part of the ICT risk management framework. The testing programme must include a range of assessments, tests, methodologies, practices, and tools. The programme must follow a risk-based approach taking into account the evolving landscape of ICT risk. Financial entities must ensure that tests are undertaken by independent parties — either internal or external. Where tests are conducted by an internal tester, the entity must dedicate sufficient resources and avoid conflicts of interest throughout the design and execution phases.
 
 Microenterprises qualifying for the simplified framework under Art. 16 are exempt from the full testing programme requirements but must still perform proportionate testing.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Testing programme governance:**
 - Document a formal Digital Operational Resilience Testing Programme approved by the management body
-- The programme must define: scope (which systems and functions are tested), frequency (annual minimum for most tests), methodologies, responsible parties, reporting and follow-up processes
+- The programme must define: scope (which systems and functions are tested), frequency (risk-based, with the applicable annual testing requirement for CIF-supporting systems/applications), methodologies, responsible parties, reporting and follow-up processes
 - Appoint a testing programme owner (typically the CISO or Head of ICT Risk)
 - The testing programme must be reviewed and updated at least annually, and upon significant changes to infrastructure, applications, or threat landscape
 - Maintain a testing calendar with planned tests for the year, tracking execution status
@@ -58,7 +66,7 @@ Microenterprises qualifying for the simplified framework under Art. 16 are exemp
 - **Testing Programme Management**: GRC platform (ServiceNow, Archer), Jira for finding tracking, custom testing calendar in SharePoint/Confluence
 - **Reporting**: Power BI / Grafana dashboards showing testing coverage, finding trends, remediation status
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Approved Digital Operational Resilience Testing Programme document
 - Annual testing calendar with planned vs. executed tests
@@ -73,9 +81,9 @@ Microenterprises qualifying for the simplified framework under Art. 16 are exemp
 
 ## Art. 25 — Testing of ICT Tools and Systems
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
-The digital operational resilience testing programme shall provide for the execution of appropriate tests, including at minimum:
+Article 25 identifies a range of appropriate testing methods. Select methods proportionately; it does not mandate every listed method at one universal frequency. The following are candidate methods:
 
 - Vulnerability assessments and scans
 - Open-source analyses
@@ -90,9 +98,9 @@ The digital operational resilience testing programme shall provide for the execu
 - End-to-end testing
 - Penetration testing
 
-Financial entities other than microenterprises must perform all these tests at appropriate intervals. ICT systems and applications supporting critical or important functions must be tested at least annually.
+Select appropriate methods under Articles 24–25 rather than assuming every listed test is mandatory. Article 24(6) requires appropriate testing at least yearly for ICT systems and applications supporting critical or important functions; assess the applicable distinctions and scope.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Vulnerability assessments and scans:**
 - Deploy automated vulnerability scanning across the full IT estate
@@ -186,7 +194,7 @@ Financial entities other than microenterprises must perform all these tests at a
 - **Load/Performance Testing**: Apache JMeter (open-source), k6 (open-source), Gatling, Locust (open-source)
 - **Phishing Simulation**: GoPhish (open-source), KnowBe4, Proofpoint Security Awareness
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Vulnerability scan reports (monthly) with trending analysis
 - SCA/SBOM reports for critical applications
@@ -206,28 +214,19 @@ Financial entities other than microenterprises must perform all these tests at a
 
 ## Art. 26 — Advanced Testing of ICT Tools, Systems, and Processes Based on TLPT (Threat-Led Penetration Testing)
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
-Financial entities identified by competent authorities must carry out TLPT at least every 3 years. TLPT must cover several or all critical or important functions and must be performed on live production systems. The scope must be validated by the competent authority (TLPT authority). TLPT must be carried out in accordance with the TIBER-EU framework.
+Financial entities identified by competent authorities must carry out TLPT at least every 3 years. TLPT must cover several or all critical or important functions and must be performed on live production systems. The scope must be validated by the competent authority (TLPT authority). Apply DORA and RTS 2025/1190. TIBER-EU provides relevant methodological context; do not substitute a framework label for the binding provisions and applicable authority instructions.
 
-Financial entities may use internal testers but must contract external testers every third test. The threat intelligence provider must always be external. Credit institutions under direct ECB supervision must always use external testers.
+Financial entities may use internal testers but must contract external testers every third test. The threat intelligence provider must always be external. For credit institutions classified as significant under Article 6(4) of Regulation (EU) No 1024/2013, apply the external-tester requirement in DORA Article 26(8); do not broaden that category to all ECB-supervised institutions without checking the legal definition.
 
-Upon completion, the entity must submit a summary of findings, remediation plans, and documentation to the competent authority. The TLPT authority issues a formal attestation confirming the test was conducted in compliance with DORA. This attestation enables mutual recognition across Member States.
+Upon completion, the entity must submit a summary of findings, remediation plans, and documentation to the competent authority. The TLPT authority issues a formal attestation documenting conformity of the TLPT under the applicable provisions, rather than overall entity compliance. This attestation enables mutual recognition across Member States.
 
 ### RTS 2025/1190 — Key Requirements
 
 **Identification of entities required to perform TLPT (RTS Art. 2):**
 
-Entities automatically in scope include:
-- Credit institutions classified as G-SIIs (Global Systemically Important Institutions) or O-SIIs (Other Systemically Important Institutions), or part of a G-SII/O-SII group
-- Payment institutions that processed > EUR 150 billion in total transactions in each of the last 2 years
-- Electronic money institutions with total outstanding e-money > EUR 2 billion in each of the last 2 years
-- Central securities depositories with total value of securities settled > EUR 1 trillion per year
-- Central counterparties
-- Trading venues operating at least one market classified as a Significant Market
-- Additional entities designated at the discretion of the national competent authority based on: impact on the financial sector, financial stability concerns, specific ICT risk profile, and ICT maturity
-
-Competent authorities may also exclude entities that meet the above criteria if they determine the entity lacks sufficient ICT maturity to safely conduct a TLPT, or if TLPT would pose a disproportionate risk to continuity of services.
+The TLPT authority identifies entities under RTS Article 2 using the applicable quantitative and qualitative criteria and exclusions. Do not treat a short category list as a final designation or assume that every mid-sized bank is in scope. Retain the authority notification and the entity-specific applicability assessment as evidence.
 
 **TLPT participants (RTS Art. 3–7):**
 
@@ -238,8 +237,8 @@ Competent authorities may also exclude entities that meet the above criteria if 
 | Control Team (CT) | Small internal team within the financial entity (formerly "White Team" under TIBER-EU); manages test logistics, maintains confidentiality from Blue Team | Internal to entity |
 | Control Team Lead (CTL) | Named individual accountable for test management within the entity; single point of contact for the TLPT authority | Internal to entity |
 | Threat Intelligence (TI) Provider | Analyses the adversarial landscape, develops threat scenarios and the Targeted Threat Intelligence Report | Always external |
-| Red Team (RT) | Executes the attack scenarios on live production systems based on TI report | External or internal (external every 3rd test; always external for ECB-supervised institutions) |
-| Blue Team (BT) | The entity's defensive security team — NOT aware the test is taking place | Internal to entity |
+| Red Team (RT) | Executes the attack scenarios on live production systems based on TI report | External or internal (external every 3rd test; external for significant credit institutions in the applicable DORA Article 26(8) category) |
+| Blue Team (BT) | The entity’s defensive security team; active testing is normally covert, with the exceptional RTS procedure and closure disclosure treated separately | Internal to entity |
 
 **Provider qualification requirements (RTS Art. 7):**
 
@@ -252,20 +251,20 @@ Competent authorities may also exclude entities that meet the above criteria if 
 - No conflicts of interest: red team and TI providers must not have been involved in the entity's defensive security operations
 - TI and RT providers can be from the same company but must have separate staff with no overlap
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **TLPT process — six phases:**
 
-**Phase 1 — Initiation (0–3 months from notification):**
+**Phase 1 — Initiation (illustrative planning window: 0–3 months; verify authority deadlines):**
 - Receive formal notification from the TLPT authority identifying the entity for TLPT
 - Appoint the Control Team Lead (CTL) and establish the Control Team (maximum 3–5 people with strict need-to-know)
 - Submit high-level project plan to the TLPT authority
 - Confirm communication protocols and secure channels with TLPT authority test managers
-- Establish confidentiality framework: the Blue Team must NOT be informed at any stage before the test conclusion
+- Establish confidentiality framework: maintain active-test secrecy, subject to the controlled exceptional procedure in RTS Article 11(10); distinguish disclosure and collaboration during closure
 - Procure TI provider and red team provider (or designate internal red team if eligible)
 - Verify provider qualifications against RTS Art. 7 requirements
 
-**Phase 2 — Scoping (0–6 months from notification):**
+**Phase 2 — Scoping (illustrative planning window: 0–6 months; verify authority deadlines):**
 - Identify all critical or important functions (CIFs) within the entity
 - Map CIFs to underlying ICT systems, applications, infrastructure, and data stores
 - Define the scope specification document including:
@@ -352,7 +351,7 @@ Competent authorities may also exclude entities that meet the above criteria if 
 - **Purple Teaming**: MITRE Caldera (open-source), Atomic Red Team (open-source), Vectr (open-source for engagement tracking), AttackIQ
 - **Test Management**: Vectr (open-source), PlexTrac, custom reporting templates aligned with TIBER-EU deliverables
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - TLPT notification letter from TLPT authority
 - Control Team appointment documentation with CTL designation
@@ -374,7 +373,7 @@ Competent authorities may also exclude entities that meet the above criteria if 
 
 ## Art. 27 — Requirements for Testers for the Carrying Out of TLPT
 
-### Requirement Summary
+### Working Regulatory Summary — Verify Against Official Text
 
 Financial entities must only use testers that meet specific requirements for TLPT:
 
@@ -386,7 +385,7 @@ Financial entities must only use testers that meet specific requirements for TLP
 
 For internal testers: they must be approved or not objected to by the competent authority, must be independent from the tested functions, and the entity must have sufficient resources to avoid conflicts of interest.
 
-### Technical Implementations
+### Proposed Technical Implementations — Project Examples
 
 **Tester qualification verification checklist:**
 
@@ -438,7 +437,7 @@ For **internal testers** (when permitted):
 - **Contract Management**: Standard TLPT contract templates (some TIBER-EU national implementations provide these)
 - **Certification Verification**: Offensive Security portal (OSCP verification), CREST member directory, EC-Council certificate verification
 
-### Audit Evidence
+### Candidate Evidence to Collect and Assess
 
 - Provider qualification assessment records (CVs, certifications, references verified)
 - Professional indemnity insurance certificates
@@ -454,24 +453,16 @@ For **internal testers** (when permitted):
 
 ---
 
-## Testing Requirements Matrix — Summary by Entity Type
+## Testing Programme — Applicability and Scheduling Review
 
-| Test Type | All Financial Entities | Entities with CIFs | TLPT-Designated Entities | Microenterprises |
-|---|---|---|---|---|
-| Vulnerability assessments | Annual | Annual | Annual | Proportionate |
-| Open-source / SCA analysis | Annual | Annual | Annual | Not required |
-| Network security assessment | Annual | Annual | Annual | Proportionate |
-| Gap analysis | Annual | Annual | Annual | Simplified |
-| Physical security review | Annual | Annual | Annual | Proportionate |
-| Source code review (SAST) | Per release cycle | Per release cycle | Per release cycle | Not required |
-| Scenario-based tests | Annual | ≥ 2x per year | ≥ 2x per year | Not required |
-| Performance testing | Annual for critical | Annual for critical | Annual for critical | Not required |
-| End-to-end testing | Annual | Annual | Annual | Proportionate |
-| Penetration testing | Annual for critical | Annual | Annual | Not required |
-| TLPT (red team) | Not required | Not required | Every 3 years | Not required |
-| Purple teaming | Not required | Recommended | Mandatory with TLPT | Not required |
+| Area | Regulatory boundary | Proposed evidence |
+| --- | --- | --- |
+| Programme design | Risk-based and proportionate testing under Articles 24–25; observe microenterprise distinctions. | Approved programme, scope, risk rationale, and owners. |
+| CIF-supporting systems and applications | Appropriate testing at least yearly under Article 24(6). This does not mean every method in Article 25 must be performed yearly. | Coverage register linking systems/functions to test dates and results. |
+| Methods | Select suitable assessments, reviews, scenario tests, performance tests, and penetration tests under Article 25. | Method rationale, authorisation, reports, and remediation. |
+| TLPT | Authority identification and scheduling under Article 26 and RTS 2025/1190; frequency may be adjusted by the authority. | Designation, approved scope, provider checks, reports, attestation, and remediation. |
+| Internal schedules | Example tier frequencies and finding-remediation targets elsewhere in this document are proposed policy choices. | Approved target, rationale, exceptions, and retest results. |
 
----
 
 ## TLPT Process Timeline (Typical 6–12 Month Engagement)
 
@@ -523,7 +514,7 @@ MONTH 11–12: ATTESTATION
 | Aspect | Penetration Testing (Art. 25) | TLPT (Art. 26) |
 |---|---|---|
 | Who must do it | All financial entities (for critical systems) | Only entities identified by competent authority |
-| Frequency | Annually | At least every 3 years |
+| Frequency | Risk-based; consider annual appropriate-testing coverage for CIF-supporting systems | At least every 3 years, subject to authority adjustment |
 | Scope | Specific systems, applications, or network segments | Several or all critical/important functions |
 | Environment | Can be done in test/staging or production | Must be on live production systems |
 | Blue Team awareness | Usually aware a test is happening | NOT aware — covert testing |
@@ -552,7 +543,7 @@ MONTH 11–12: ATTESTATION
 
 ## Document Metadata
 
-- **Version**: 1.0
+- **Version**: 1.0 — revised documentation; evaluation pending
 - **Knowledge base**: DORA Technical Implementation Advisor
 - **Pillar**: 3 of 5 — Digital Operational Resilience Testing
 - **DORA Articles covered**: 24, 25, 26, 27
@@ -560,4 +551,5 @@ MONTH 11–12: ATTESTATION
 - **Supporting framework**: TIBER-EU (updated February 2025)
 - **Target entity type**: Credit institution (bank)
 - **Proportionality tier**: Full framework (assumes potential TLPT designation)
-- **Last updated**: July 2026
+- **Original content date**: July 2026
+- **Editorial revision date**: 30 October 2026

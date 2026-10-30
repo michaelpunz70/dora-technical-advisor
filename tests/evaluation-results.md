@@ -1,22 +1,10 @@
 # Evaluation Results — DORA Technical Implementation Advisor
 
-## Test Configuration
+**Status: NOT RUN / results not supplied.** The submitted repository contained an evaluation template, blank scores, and no raw responses. No comparison, ranking, performance, completed run, or reliability claim is established by this document. Do not replace missing data with estimates.
 
-| Parameter | Value |
-|---|---|
-| Hardware | MacBook Air M3, 16 GB unified memory |
-| AnythingLLM version | (fill in) |
-| LM Studio version | (fill in) |
-| Embedding model | AnythingLLM built-in embedder |
-| Vector database | LanceDB |
-| Chat mode | Query |
-| Top-K | 6 |
-| Similarity threshold | 0.25 |
-| Documents loaded | (fill in: number of documents and total chunks) |
+## Candidate model inventory
 
----
-
-## Models Evaluated
+The original labels and specifications are retained below for traceability. They are unverified inventory data, not confirmation that each artifact exists under this exact name, has the reported architecture, was downloaded, or can run on the project hardware. Resolve exact publisher IDs and artifact specifications before testing.
 
 | # | Model | Organization | Parameters | Architecture | Type |
 |---|---|---|---|---|---|
@@ -27,177 +15,63 @@
 | 5 | Gemma 4 12B QAT | Google | 12B | Dense (Quantization-Aware Trained) | General |
 | 6 | Ministral 3 14B Reasoning | Mistral AI | 14B | Dense | Reasoning-optimized |
 
-**Model selection rationale**: The 6 models were chosen to provide coverage across four distinct organizational ecosystems (Mistral, Google, Microsoft, Alibaba), three parameter size tiers (3–4B, 8B, 12–14B), two architecture types (dense and MoE), and both general-purpose and reasoning-optimized variants. This enables analysis of how model size, architecture, and training focus affect performance on regulatory/technical content.
+These six candidates represent four organisations in the inventory. Differences between models are confounded by training, artifact format, quantisation, prompt templates, and inference settings. A small convenience sample cannot isolate a causal effect of size, architecture, or reasoning training. The earlier predicted ranking was an unsupported pre-test expectation and is not a result or recommendation.
 
----
+## Baseline configuration — to verify at run time
 
-## Hypothesis
+| Parameter | Documented baseline / required record |
+| --- | --- |
+| Hardware | MacBook Air M3, 16 GB unified memory |
+| OS, AnythingLLM, LM Studio versions | Pending actual run record |
+| Embedding | Built-in local embedder; exact ID/version/hash pending |
+| Vector database | LanceDB; version pending |
+| Mode / retrieval | Query; Top-K 6; similarity threshold 0.25 |
+| Corpus | Expected 18 baseline documents; actual files, versions, digests, and chunk counts pending |
+| Chunking / overlap | Pending |
+| Prompt | Snapshot and digest of config/system-prompt.md used in run |
+| Model artifact | Publisher ID, URL, filename, format, quantisation, digest, license |
+| Generation settings | Context window, maximum output, temperature, sampling, seed if supported |
+| Session policy | Fresh-session/reset policy and treatment of history |
+| Reviewer | Name/role, review date, conflicts, and reference-answer review status |
 
-Before testing, the expected ranking was:
-1. **Ministral 3 14B Reasoning** — largest model with reasoning optimization, expected to score highest on complex cross-pillar queries
-2. **Gemma 4 12B QAT** — large model with quantization-aware training, expected strong factual accuracy
-3. **Qwen3 8B** — strong general-purpose model, expected good structured content handling
-4. **Gemma 4 E4B** — MoE architecture with only 4B active parameters, interesting to see if MoE efficiency translates to quality
-5. **Phi-4 Mini Reasoning** — small but reasoning-optimized, expected to punch above its weight on complex queries
-6. **Ministral 3 3B Reasoning** — smallest model, expected baseline performance
+## Protocol
 
----
+1. Review all 30 reference answers in [test-queries.md](test-queries.md) against the current sources. Record applicability and source gaps.
+2. Freeze the corpus, prompt, queries, and configuration. Give each combination a configuration ID.
+3. Run all 30 cases for each candidate, retaining exact responses and retrieved context. The full single-run matrix contains **180 planned model-query cases**; none are claimed completed here.
+4. Keep settings consistent where technically feasible. Record model-specific differences and failures. If repeated runs are used, declare the repetition policy before comparing results and report variability.
+5. Apply the four-dimension 1–5 rubric and retain scoring rationale. Log false citations, unsupported mandates, wrong clocks, unjustified compliance claims, and omitted applicability conditions as material errors.
+6. Use a second reviewer for material legal disagreements where feasible and document adjudication. This is a proposed review process, not an independent review already performed.
+7. Report scored-case counts, failed/incomplete cases, per-round and per-dimension means, and material error counts. An overall mean must state its denominator and must not conceal missing cases.
+8. Draw bounded conclusions for the frozen test set only. Do not infer legal certification, privacy guarantees, or production suitability.
 
-## Summary Results
+## Summary — no measured results
 
-| Model | Parameters | R1 Avg (Factual) | R2 Avg (Technical) | R3 Avg (Cross-Pillar) | Overall Avg | Notes |
-|---|---|---|---|---|---|---|
-| Ministral 3 3B Reasoning | 3B | /5 | /5 | /5 | /5 | |
-| Phi-4 Mini Reasoning | 3.8B | /5 | /5 | /5 | /5 | |
-| Gemma 4 E4B | 4B active | /5 | /5 | /5 | /5 | |
-| Qwen3 8B | 8B | /5 | /5 | /5 | /5 | |
-| Gemma 4 12B QAT | 12B | /5 | /5 | /5 | /5 | |
-| Ministral 3 14B Reasoning | 14B | /5 | /5 | /5 | /5 | |
+| Candidate | Completed cases / 30 | Round 1 | Round 2 | Round 3 | Overall | Status |
+| --- | --- | --- | --- | --- | --- | --- |
+| Ministral 3 3B Reasoning | Not reported | N/A | N/A | N/A | N/A | Pending |
+| Phi-4 Mini Reasoning | Not reported | N/A | N/A | N/A | N/A | Pending |
+| Gemma 4 E4B | Not reported | N/A | N/A | N/A | N/A | Pending |
+| Qwen3 8B | Not reported | N/A | N/A | N/A | N/A | Pending |
+| Gemma 4 12B QAT | Not reported | N/A | N/A | N/A | N/A | Pending |
+| Ministral 3 14B Reasoning | Not reported | N/A | N/A | N/A | N/A | Pending |
 
----
+`N/A` means no measured score, not zero performance. No best model has been established.
 
-## Detailed Results — Ministral 3 3B Reasoning
+## Detailed record template — repeat for each model, query, and repetition
 
-### Round 1 — Basic Factual Retrieval
+- Run ID / date / configuration ID:
+- Exact model artifact and prompt/corpus snapshot:
+- Query ID and exact query text:
+- Raw response and retrieved passages/source identifiers:
+- Reference-answer review status and official provisions checked:
+- Accuracy / completeness / specificity / unsupported-claim resistance: pending /5 each
+- Per-answer mean and scoring rationale:
+- Unsupported citations, material errors, omissions, and uncertainty handling:
+- Retrieval issue / generation issue / reference-answer issue:
+- Loading failures, truncation, latency, memory pressure, or other observations:
+- Reviewer / adjudication / final status:
 
-**Q1: What are the 5 pillars of DORA?**
-- Response: (paste response)
-- Score: /5
-- Notes:
+## Analysis — pending evidence
 
-**Q2: How often must the ICT risk management framework be reviewed?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q3: What are the 7 criteria for classifying a major incident?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q4: What is the deadline for the initial incident notification?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q5: What is TLPT and who must perform it?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q6: What is the Register of Information?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q7: How often must TLPT be performed?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q8: What is the minimum active testing duration for TLPT?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q9: Must the Blue Team know about a TLPT in advance?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-**Q10: Is purple teaming mandatory in TLPT?**
-- Response: (paste response)
-- Score: /5
-- Notes:
-
-### Round 2 — Technical Implementation Queries
-
-**Q11–Q20**: (same structure as above, one entry per query)
-
-### Round 3 — Complex Cross-Pillar Queries
-
-**Q21–Q30**: (same structure as above, one entry per query)
-
----
-
-## Detailed Results — Phi-4 Mini Reasoning
-
-(Copy the same 30-query structure — fill in after testing)
-
----
-
-## Detailed Results — Gemma 4 E4B
-
-(Copy the same 30-query structure — fill in after testing)
-
----
-
-## Detailed Results — Qwen3 8B
-
-(Copy the same 30-query structure — fill in after testing)
-
----
-
-## Detailed Results — Gemma 4 12B QAT
-
-(Copy the same 30-query structure — fill in after testing)
-
----
-
-## Detailed Results — Ministral 3 14B Reasoning
-
-(Copy the same 30-query structure — fill in after testing)
-
----
-
-## Analysis and Conclusions
-
-### Hypothesis vs. Results
-
-(Write here whether the pre-test hypothesis was confirmed or contradicted, and why)
-
-### Performance by Model Size
-
-(Analyze whether larger models consistently outperformed smaller ones, or if reasoning-optimized smaller models competed with larger general-purpose ones)
-
-### Dense vs. MoE Architecture
-
-(Analyze whether Gemma 4 E4B's MoE architecture with only 4B active parameters performed comparably to dense models of similar or larger size)
-
-### Reasoning-Optimized vs. General-Purpose
-
-(Analyze whether reasoning variants — Ministral 3B/14B Reasoning, Phi-4 Mini Reasoning — outperformed general-purpose models on the complex cross-pillar queries in Round 3)
-
-### Strengths and Weaknesses by Model
-
-**Ministral 3 3B Reasoning:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-**Phi-4 Mini Reasoning:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-**Gemma 4 E4B:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-**Qwen3 8B:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-**Gemma 4 12B QAT:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-**Ministral 3 14B Reasoning:**
-- Strengths: (fill in)
-- Weaknesses: (fill in)
-
-### Best Model for This Use Case
-
-(Write your recommendation and rationale)
-
-### Improvement Opportunities
-
-(List specific areas where the system could be improved: additional documents, prompt tuning, chunk size adjustments, Top-K changes, etc.)
+After completing the records, discuss citation support, retrieval coverage, recurring errors, results by query type, and resource constraints. Report limitations before making a use-case recommendation. Preserve failed runs and negative findings. Re-evaluate affected cases after prompt, model, corpus, or retrieval changes; never silently combine results from different configurations.
