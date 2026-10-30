@@ -1,163 +1,271 @@
 # DORA Technical Implementation Advisor
 
-**Version 1.0** · **Status: Knowledge base complete — model evaluation in progress**
+**Version 1.0 · Self-directed GRC case study · Knowledge base documented; model evaluation in progress**
 
-A local-first, privacy-preserving AI advisor that maps EU Regulation 2022/2554 (Digital Operational Resilience Act) requirements to concrete technical implementations for credit institutions.
+A local-first, retrieval-augmented generation (RAG) prototype for exploring how requirements under the EU Digital Operational Resilience Act (DORA) can be translated into technical controls, implementation guidance, and evidence checklists, with a focus on credit institutions.
 
-> *This project was developed offline as a structured GRC case study for DORA technical implementation and subsequently published on GitHub for documentation and continued improvement.*
+The main contribution is a structured **regulatory mapping knowledge base**: linking regulatory provisions to proposed controls, supporting evidence, and related security frameworks. The LLM interface provides a way to query that material; it does not independently establish the correctness of a mapping or demonstrate compliance.
 
-## Problem
+> Developed offline as a structured GRC case study and subsequently published on GitHub for documentation and continued improvement. This is a learning and research prototype, not a certified compliance solution, legal opinion, or production banking deployment.
 
-DORA entered into force on 17 January 2025, requiring all EU financial entities to implement comprehensive ICT risk management, incident reporting, resilience testing, and third-party risk management. The regulation spans 64 articles plus 9 RTS/ITS documents — over 500 pages of regulatory text. Security teams struggle to translate principles-based regulatory requirements into specific technical controls, tools, and audit evidence.
+## Problem and regulatory context
 
-## Solution
+DORA addresses ICT risk management, ICT-related incident reporting, digital operational resilience testing, ICT third-party risk, and information sharing. It entered into force on 16 January 2023 and has applied since 17 January 2025. Applicability, exclusions, proportionality, and specific obligations must be assessed for the entity concerned. See [Regulation (EU) 2022/2554, including Articles 2–4 and 64](https://eur-lex.europa.eu/eli/reg/2022/2554/oj/eng).
 
-A RAG-based (Retrieval-Augmented Generation) advisory system running entirely on local infrastructure — no data leaves the machine. The system ingests the full DORA regulatory corpus plus a custom-built technical mapping knowledge base, and answers natural language queries with specific article references, implementation steps, tool recommendations, and audit evidence checklists.
+For ICT and GRC teams, a practical challenge is connecting regulatory requirements to implementation decisions and evidence that can be reviewed. A technical recommendation alone does not demonstrate that a control is appropriately designed, implemented, or operating effectively.
 
+This project addresses that translation problem through a curated mapping layer and a local RAG interface. Its corpus is a defined project collection, not a claim to contain every DORA-related instrument or subsequent regulatory development.
+
+## Intended use and GRC value
+
+- Explore article-level requirements and their relationship to potential technical controls.
+- Structure discussions between ICT, information security, risk, compliance, and assurance stakeholders.
+- Identify candidate evidence such as policies, configurations, diagrams, review records, and test results.
+- Compare explanatory mappings to ISO/IEC 27001:2022 and NIST CSF 2.0.
+- Evaluate how consistently local LLMs answer a fixed set of regulatory and implementation questions.
+
+The intended workflow is:
+
+**Regulatory source → applicability review → interpreted requirement → proposed control → evidence to collect → human review and gap assessment.**
+
+The repository supports the interpretation and preparation stages. It does not, by itself, collect operational evidence, verify control effectiveness, approve risk acceptance, or produce an authoritative readiness score.
+
+## Solution and architecture
+
+The documented design uses AnythingLLM Desktop for document ingestion and retrieval, an embedded LanceDB vector store, and LM Studio for local LLM inference on Apple Silicon. The retrieval setting is **Top-K = 6**.
+
+```text
+┌─────────────────────────────────────────────────────────┐
+│ User query                                              │
+│ "What network security controls support DORA Art. 9?"    │
+└───────────────────────────┬─────────────────────────────┘
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ AnythingLLM Desktop — RAG engine                         │
+│                                                         │
+│ Built-in embedding model → LanceDB → Retrieval (K = 6)   │
+│                                           │             │
+│                                           ▼             │
+│ Retrieved regulatory and mapping context                │
+│                                           │             │
+│                                           ▼             │
+│ LM Studio — local LLM server                            │
+│ Apple Silicon Metal · endpoint: localhost:1234           │
+└───────────────────────────┬─────────────────────────────┘
+                            ▼
+┌─────────────────────────────────────────────────────────┐
+│ Draft response                                          │
+│ • Regulatory references and interpretation              │
+│ • Candidate controls and implementation options         │
+│ • Suggested evidence and framework cross-references     │
+│ • Assumptions, gaps, and items requiring verification    │
+└───────────────────────────┬─────────────────────────────┘
+                            ▼
+                 Human source and applicability review
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    User Query                           │
-│        "What technical controls does Art. 9             │
-│         require for network security?"                  │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│              AnythingLLM (RAG Engine)                    │
-│  ┌─────────────┐  ┌──────────────┐  ┌───────────────┐  │
-│  │  Embedding   │  │ Vector Store │  │   Retrieval   │  │
-│  │   Model      │→ │  (LanceDB)   │→ │  (Top-K = 6)  │  │
-│  └─────────────┘  └──────────────┘  └───────┬───────┘  │
-│                                             │          │
-│                    Retrieved context ───────┘          │
-│                                             ▼          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │         LM Studio (Local LLM Server)              │  │
-│  │         Model: Local LLM (Apple Silicon Metal)     │  │
-│  │         Backend: Metal | Endpoint: localhost:1234  │  │
-│  └──────────────────────────────────────────────────┘  │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│                  AI Response                            │
-│  - DORA Art. 9(2) + RTS 2024/1774 Art. 12-13          │
-│  - Technical: VLANs, IDS/IPS, NGFW, micro-segmentation│
-│  - Tools: Suricata, Snort, pfSense, Wazuh             │
-│  - Evidence: network diagrams, firewall rule reviews   │
-│  - ISO 27001: A.8.20-8.22 | NIST CSF: PR.DS, PR.IP   │
-│  - Priority: CRITICAL                                  │
-└─────────────────────────────────────────────────────────┘
-```
 
-## DORA Coverage
+Local execution is an architectural objective and configuration choice. It is not evidence that every component is offline, that no telemetry exists, or that the deployment meets an organisation's privacy and security requirements. See [Privacy and security](#privacy-and-security).
 
-| Pillar | Articles | RTS/ITS | Status |
-|---|---|---|---|
-| 0 — Introduction, Scope, Definitions | Art. 1–4 | — | ✅ Complete |
-| 1 — ICT Risk Management | Art. 5–16 | RTS 2024/1774 | ✅ Complete |
-| 2 — Incident Reporting | Art. 17–23 | RTS 2024/1772, RTS 2025/301, ITS 2025/302 | ✅ Complete |
-| 3 — Resilience Testing | Art. 24–27 | RTS 2025/1190 | ✅ Complete |
-| 4 — Third-Party Risk | Art. 28–44 | RTS 2024/1773, RTS 2025/532, ITS 2024/2956 | ✅ Complete |
-| 5 — Information Sharing | Art. 45 | — | ✅ Complete |
+## Regulatory mapping and evidence
 
-## Knowledge Base
+The Level 2 knowledge base connects regulatory requirements with proposed technical controls, open-source and commercial tool examples, expected evidence, framework cross-references, and implementation priorities.
 
-The system uses a three-level knowledge base totaling 18 documents:
+These categories should be interpreted separately:
 
-**Level 1 — Regulatory texts** (9 PDFs from [EUR-Lex](https://eur-lex.europa.eu/)): DORA full text (Reg. 2022/2554) plus all 8 RTS/ITS. See [`docs/document-sources.md`](docs/document-sources.md) for the complete list with official download links.
+| Mapping element | GRC interpretation |
+| --- | --- |
+| Regulatory reference | A pointer to the source provision; the current official text must be checked. |
+| Requirement interpretation | The author's working interpretation, subject to applicability and specialist review. |
+| Technical control | A candidate implementation approach, to be tailored to the entity's risks and architecture. |
+| Tool example | An implementation option, not a regulatory mandate or product endorsement. |
+| Expected evidence | An evidence request or checklist item, not proof that evidence exists or is sufficient. |
+| ISO/NIST cross-reference | An interpretive relationship, not equivalence, certification, or automatic compliance. |
+| Implementation priority | A project prioritisation judgement, not a regulator-assigned severity or universal deadline. |
 
-**Level 2 — Technical mapping** (6 Markdown files, 25,000+ words): custom-built knowledge base covering every DORA article (Art. 1–45) — from definitions and scope through all 5 pillars. Each entry includes the regulatory requirement, technical controls, recommended tools (open-source and commercial), expected audit evidence, cross-references to ISO 27001:2022 and NIST CSF 2.0, and implementation priority. Browse them in [`knowledge-base/level-2-technical-mapping/`](knowledge-base/level-2-technical-mapping/).
+### Illustrative network security mapping
 
-**Level 3 — Context frameworks** (3 PDFs): TIBER-EU 2025 (ECB), NIST CSF 2.0 (NIST), and Elvinger Hoss DORA compilation. Links in [`docs/document-sources.md`](docs/document-sources.md).
+For a network security query, the response may connect DORA Article 9 to the more detailed network security management provisions in [Delegated Regulation (EU) 2024/1774, Article 13](https://eur-lex.europa.eu/eli/reg_del/2024/1774/oj/eng). Article 12 addresses logging; it should be distinguished from Article 13's network security requirements.
 
-## Example Queries
+| Layer | Illustrative content |
+| --- | --- |
+| Regulatory anchor | DORA Article 9; RTS 2024/1774 Article 13; Article 12 where logging is relevant. |
+| Candidate controls | Risk-based network segmentation, network access controls, documented data flows, and separation of administration networks; IDS/IPS, NGFW, or micro-segmentation where justified. |
+| Tool examples | Suricata, Snort, pfSense, and Wazuh, depending on the control objective and environment. |
+| Candidate evidence | Approved network and data-flow diagrams, segmentation rationale, firewall rule reviews, configuration records, and relevant test or monitoring results. |
+| Framework context | ISO/IEC 27001:2022 Annex A controls 8.20–8.22 may provide related context; each cross-reference requires review. |
+| Review boundary | Product installation and generated checklists do not establish control effectiveness or regulatory compliance. |
 
-- "What network security controls does RTS 2024/1774 Art. 12-13 require for a bank?"
-- "Walk me through all DORA obligations triggered by a ransomware attack on online banking."
-- "What are the 7 classification criteria for major incidents and their materiality thresholds?"
-- "What mandatory contractual provisions must be in ICT third-party contracts under Art. 30?"
-- "What is the difference between regular penetration testing (Art. 25) and TLPT (Art. 26)?"
+Framework identifiers must be version-specific. The original example used NIST identifiers `PR.DS` and `PR.IP`; these must not be presented together as a verified NIST CSF 2.0 mapping. Cross-references in the knowledge base should be checked against the declared framework edition before reuse.
 
-See [`tests/test-queries.md`](tests/test-queries.md) for the full validation suite of 30 queries across 3 difficulty levels with expected answers.
+## Documented DORA coverage
 
-## Model Evaluation
+The project records the following mapping coverage. **“Documented” describes the presence of project material, not independently validated legal completeness, control implementation, or compliance.**
 
-The system was validated using 30 structured test queries across 6 models from 4 different organizations, scoring accuracy, completeness, specificity, and hallucination resistance on a 1–5 scale:
+| Area | Articles | Supporting instruments listed in the project | Mapping status |
+| --- | --- | --- | --- |
+| Introduction, scope, definitions, and proportionality | 1–4 | — | Documented |
+| ICT risk management | 5–16 | RTS 2024/1774 | Documented |
+| Incident reporting | 17–23 | RTS 2024/1772; RTS 2025/301; ITS 2025/302 | Documented |
+| Resilience testing | 24–27 | RTS 2025/1190 | Documented |
+| ICT third-party risk and oversight provisions | 28–44 | RTS 2024/1773; RTS 2025/532; ITS 2024/2956 | Documented |
+| Information sharing | 45 | — | Documented |
 
-| Model | Organization | Parameters | Architecture | Avg Score | Notes |
-|---|---|---|---|---|---|
-| Ministral 3 3B Reasoning | Mistral AI | 3B | Dense | TBD | TBD |
-| Phi-4 Mini Reasoning | Microsoft | 3.8B | Dense | TBD | TBD |
-| Gemma 4 E4B | Google | 8B total / 4B active | MoE | TBD | TBD |
-| Qwen3 8B | Alibaba | 8B | Dense | TBD | TBD |
-| Gemma 4 12B QAT | Google | 12B | Dense (QAT) | TBD | TBD |
-| Ministral 3 14B Reasoning | Mistral AI | 14B | Dense | TBD | TBD |
+DORA contains 64 articles. The custom technical mapping is scoped to **Articles 1–45**, rather than all 64 articles. The instruments above represent the project's selected corpus; they are not an exhaustive inventory of all relevant delegated or implementing acts, guidance, or supervisory expectations. Provisions within Articles 28–44 also address oversight arrangements and do not all impose identical duties on a credit institution.
 
-Full results and analysis in [`tests/evaluation-results.md`](tests/evaluation-results.md).
+## Knowledge base
 
-## Tech Stack
+The project inventory describes **18 documents across three levels**. Counts and word totals below are project-reported inventory figures, not an independent content audit.
 
-| Component | Technology |
-|---|---|
-| LLM | 6 models evaluated: Ministral 3 3B/14B, Phi-4 Mini, Gemma 4 E4B/12B, Qwen3 8B via LM Studio (local, Apple Silicon Metal backend) |
-| RAG Engine | AnythingLLM Desktop |
-| Vector Database | LanceDB (embedded) |
-| Embedding | AnythingLLM built-in embedder |
+### Level 1 — Regulatory texts
+
+**9 PDFs:** Regulation (EU) 2022/2554 and the **8 RTS/ITS instruments listed in the coverage table**.
+
+Official download links are recorded in [`docs/document-sources.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/docs/document-sources.md), primarily from [EUR-Lex](https://eur-lex.europa.eu/).
+
+### Level 2 — Technical mapping
+
+**6 Markdown files, reported at 25,000+ words**, covering Articles 1–45 across the introductory material and five thematic areas. Entries include requirements, proposed controls, tool examples, expected evidence, ISO/IEC 27001:2022 and NIST CSF 2.0 cross-references, and implementation priorities.
+
+Browse [`knowledge-base/level-2-technical-mapping/`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/knowledge-base/level-2-technical-mapping).
+
+This is an author-created interpretation layer. Its contents require review against the official sources, entity-specific applicability, and the relevant framework versions.
+
+### Level 3 — Context frameworks
+
+**3 PDFs:** TIBER-EU 2025 (ECB), NIST CSF 2.0 (NIST), and the Elvinger Hoss DORA compilation. Source links are recorded in [`docs/document-sources.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/docs/document-sources.md).
+
+These documents have different roles and authority. A secondary compilation is a reference aid; official legal texts remain the basis for checking regulatory requirements.
+
+## Example queries
+
+- “What network security controls are addressed by RTS 2024/1774 Article 13, and what logging requirements in Article 12 are relevant?”
+- “Walk me through the potential DORA obligations triggered by a ransomware attack on online banking, stating applicability assumptions.”
+- “What are the seven incident classification criteria and the applicable materiality thresholds under the relevant standards?”
+- “What contractual provisions should be reviewed under DORA Article 30, including any distinctions for critical or important functions?”
+- “How do the testing provisions in Article 25 differ from threat-led penetration testing under Article 26?”
+
+The project defines **30 test queries across three difficulty levels, with expected answers**, in [`tests/test-queries.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/tests/test-queries.md). Expected answers are evaluation references and should themselves be reviewed; they are not authoritative legal determinations.
+
+## Model evaluation — in progress
+
+The evaluation design covers **six model candidates from four organisations** and the 30-query test set. It proposes scoring **accuracy, completeness, specificity, and hallucination resistance on a 1–5 scale**.
+
+**No completed scores are reported here.** The original results table contains only `TBD` values. This README therefore makes no claim of completed validation, comparative superiority, demonstrated reliability, or measured hallucination resistance.
+
+The following model labels and specifications are retained from the project inventory. Exact model identifiers, publisher specifications, architecture labels, quantisations, and downloaded artifacts must be verified before reporting reproducible results.
+
+| Model label in project inventory | Organisation | Reported parameters | Reported architecture | Average score | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Ministral 3 3B Reasoning | Mistral AI | 3B | Dense | TBD | Evaluation pending |
+| Phi-4 Mini Reasoning | Microsoft | 3.8B | Dense | TBD | Evaluation pending |
+| Gemma 4 E4B | Google | 8B total / 4B active | MoE | TBD | Evaluation pending; specifications require verification |
+| Qwen3 8B | Alibaba | 8B | Dense | TBD | Evaluation pending |
+| Gemma 4 12B QAT | Google | 12B | Dense (QAT) | TBD | Evaluation pending; specifications require verification |
+| Ministral 3 14B Reasoning | Mistral AI | 14B | Dense | TBD | Evaluation pending |
+
+Evaluation records and subsequent analysis belong in [`tests/evaluation-results.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/tests/evaluation-results.md).
+
+### Evidence needed for meaningful results
+
+A completed evaluation should record:
+
+- Exact model artifact, version, quantisation, application versions, and hardware configuration.
+- Corpus snapshot, embedding model, chunking, retrieval settings, system prompt, and generation parameters.
+- Per-query responses, retrieved source passages, expected-answer references, and scoring rationale.
+- A defined rubric, reviewer details, citation checks, unsupported claims, omissions, and handling of uncertainty.
+- Failed or incomplete runs, repeated-run variability, and relevant latency or memory observations.
+
+The 30-query set is a limited project benchmark. Even completed results would not establish general legal accuracy, production suitability, or compliance assurance. Retrieval failures and generation errors should be analysed separately, and subjective scores should not be presented as statistical proof of reliability.
+
+## Tech stack
+
+| Component | Documented technology or configuration |
+| --- | --- |
+| LLM serving | LM Studio; six model candidates listed above |
+| Inference backend | Apple Silicon Metal |
+| RAG engine | AnythingLLM Desktop |
+| Vector database | LanceDB, embedded |
+| Embeddings | AnythingLLM built-in embedder; exact model/version to be recorded |
+| Retrieval | Top-K = 6 |
+| Local server | `localhost:1234` |
 | Hardware | MacBook Air M3, 16 GB unified memory |
-| Cloud dependencies | None — 100% local inference |
+| Intended cloud dependency | No cloud inference API required for the intended local configuration; installation, downloads, updates, telemetry, and integrations require separate verification |
 
-## Privacy & Security
+Hardware details describe the project environment, not a guarantee that every listed model or context length will run successfully within available memory.
 
-This system is designed for financial sector use where data sovereignty is non-negotiable:
+## Privacy and security
 
-- All processing happens locally — zero API calls to external services
-- No telemetry or data collection
-- Documents never leave the local machine
-- Suitable for deployment within bank internal networks
-- Model runs on-device via Apple Silicon Metal — no GPU cloud services
+The design aims to keep document processing, embeddings, retrieval, and inference local when all components are configured accordingly. This can reduce exposure to external inference services, but **local-first operation alone does not establish privacy, data sovereignty, security, or GDPR compliance**.
 
-## Quick Start
+The project does not provide evidence supporting blanket claims of zero external API calls, no telemetry, or suitability for a bank's internal network. Those properties depend on application versions, configuration, integrations, host security, and observed behaviour.
 
-1. Install [LM Studio](https://lmstudio.ai/) and download one of the evaluated models
-2. Start the LM Studio local server on `localhost:1234`
-3. Install [AnythingLLM Desktop](https://anythingllm.com/download) and connect to LM Studio
-4. Download the Level 1 PDFs from EUR-Lex (links in [`docs/document-sources.md`](docs/document-sources.md))
-5. Upload all documents (Level 1 + Level 2 + Level 3) to a new AnythingLLM workspace
-6. Set the system prompt from [`config/system-prompt.md`](config/system-prompt.md)
-7. Start querying
+Before processing sensitive information or considering an organisational deployment, review and document:
 
-Detailed setup instructions for macOS Apple Silicon: [`docs/setup-guide.md`](docs/setup-guide.md)
+- Local embedding and inference providers; cloud connectors, agents, external tools, and other outbound integrations.
+- Download, update, and telemetry behaviour, with network observations or enforced egress controls where required.
+- Server binding and exposure: verify loopback-only access where intended; assess authentication and access restrictions if network access is enabled.
+- Storage of uploaded files, extracted text, vector data, prompts, responses, logs, caches, and backups; define access, retention, and deletion controls.
+- Host encryption, account permissions, patching, dependency provenance, and model artifact provenance.
+- Risks from untrusted retrieved content, including prompt injection, misleading citations, and unsupported output.
+- Applicable data protection obligations and internal approvals before introducing personal, confidential, or regulated information.
 
-## Repository Structure
+These are review requirements, not controls claimed to be implemented or tested by this README. Use public regulatory material and synthetic queries until the relevant safeguards have been assessed.
 
-```
+## Quick start
+
+1. Install [LM Studio](https://lmstudio.ai/) and download a suitable local model. Verify the exact model artifact and its hardware requirements; the evaluation candidates above are not validated recommendations.
+2. Start the LM Studio local server on `localhost:1234` and verify the intended network binding.
+3. Install [AnythingLLM Desktop](https://anythingllm.com/download), connect it to LM Studio, and select a local embedding configuration.
+4. Download the Level 1 PDFs using [`docs/document-sources.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/docs/document-sources.md).
+5. Create an AnythingLLM workspace and ingest the Level 1, Level 2, and Level 3 documents. Confirm ingestion completed and record the corpus versions.
+6. Apply the prompt from [`config/system-prompt.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/config/system-prompt.md) and configure retrieval to Top-K = 6.
+7. Run sample queries with public material. Check the retrieved passages and article references against the official sources before relying on a response.
+8. Record configuration and test outcomes before conducting the structured evaluation.
+
+Detailed setup instructions for macOS Apple Silicon are in [`docs/setup-guide.md`](https://github.com/michaelpunz70/dora-technical-advisor/blob/main/docs/setup-guide.md). Settings and available options may differ by application version.
+
+## Repository structure
+
+```text
 ├── knowledge-base/
-│   ├── level-2-technical-mapping/    # 6 mapping files — Art. 1–45 (25,000+ words)
-│   ├── level-1-regulatory/           # EUR-Lex PDFs — not committed, links in docs
-│   └── level-3-context/              # Context frameworks — not committed, links in docs
+│   ├── level-2-technical-mapping/    # 6 mapping files; Art. 1–45; reported 25,000+ words
+│   ├── level-1-regulatory/           # Regulatory PDFs; not committed; links in docs
+│   └── level-3-context/              # Context PDFs; not committed; links in docs
 ├── config/
-│   └── system-prompt.md              # AnythingLLM system prompt
+│   └── system-prompt.md             # AnythingLLM system prompt
 ├── docs/
-│   ├── setup-guide.md                # Step-by-step setup for macOS M3
-│   └── document-sources.md           # All source document links
+│   ├── setup-guide.md               # Setup for macOS / Apple Silicon M3
+│   └── document-sources.md          # Source inventory and download links
 └── tests/
-    ├── test-queries.md               # 30 validation queries with expected answers
-    └── evaluation-results.md         # Model comparison results
+    ├── test-queries.md              # 30 queries and expected answers
+    └── evaluation-results.md        # Evaluation records; results pending
 ```
 
-## Version History
+## GRC limitations and review boundaries
+
+- **Regulatory scope:** the selected corpus and Articles 1–45 mapping do not establish exhaustive coverage of all applicable obligations or later amendments. Review current sources and entity-specific requirements.
+- **Interpretation:** mappings, suggested tools, and priorities reflect project analysis. They require review by appropriately qualified ICT, risk, compliance, and legal stakeholders.
+- **Evidence:** an evidence checklist is not collected evidence. Evidence must be attributable, current, relevant to the scoped control, and assessed for sufficiency.
+- **Control assurance:** documented control design does not demonstrate implementation or sustained operating effectiveness. Testing and accountable ownership remain necessary.
+- **Framework mapping:** ISO/NIST references are aids to analysis. They do not establish one-to-one equivalence or transfer compliance between frameworks.
+- **AI reliability:** RAG can retrieve incomplete or irrelevant context, and an LLM can omit requirements, invent references, or produce confident but incorrect answers. Citations must be checked.
+- **Deployment:** no independent security assessment, banking production approval, or privacy certification is evidenced here.
+- **Accountability:** regulatory decisions, incident classification and reporting, risk acceptance, and assurance conclusions remain with the responsible organisation and reviewers.
+
+## Version history and next steps
 
 | Version | Date | Description |
-|---|---|---|
-| 1.0 | July 2026 | Initial release — knowledge base (Art. 1–45), system architecture, evaluation framework |
-| 1.1 | (planned) | Model evaluation results for 6 LLMs |
-| 1.2 | (planned) | Prompt tuning improvements based on evaluation findings |
+| --- | --- | --- |
+| 1.0 | July 2026 | Initial release as recorded by the project: Articles 1–45 knowledge base, architecture, and evaluation framework. |
+| 1.1 | Planned | Complete and publish the six-model evaluation with reproducible configuration, response-level evidence, and limitations. |
+| 1.2 | Planned | Tune prompts based on documented findings and repeat affected evaluation cases. |
+
+Further improvements should prioritise source version tracking, review of article-level mappings and framework identifiers, and explicit separation of proposed controls from verified implementation evidence.
 
 ## Author
 
-**Michael Punz** — Cybersecurity (GRC & IAM)
+**Michael Punz — Cybersecurity (GRC & IAM)**
 
-## License
+## License and source reuse
 
-MIT License. The regulatory documents (Level 1 and Level 3) are published by EU institutions and are subject to their respective terms of reuse.
+Project code and original materials are offered under the **MIT License**, subject to the repository's license file. Third-party regulatory texts, standards, frameworks, compilations, and model artifacts retain their own copyright, licensing, and reuse terms. The project's MIT License does not relicense those materials. Check each publisher's terms before redistribution; Level 3 includes materials from different publishers and must not be treated as uniformly EU-institution content.
